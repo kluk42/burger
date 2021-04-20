@@ -1,5 +1,8 @@
+@import '../index.scss';
+
 .App {
   text-align: center;
+  @include wheat;
 }
 
 .App-logo {
