@@ -22,7 +22,6 @@ const withErrorHandler = <T, >(WrappedComponent: FC<T>, axios: AxiosInstance)  =
 
         useEffect(() => {
         return () => {
-            console.log('bang');
             axios.interceptors.request.eject(reqInterceptor);
             axios.interceptors.response.eject(resInterceptor);
         };

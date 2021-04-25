@@ -2,7 +2,7 @@ import {FC} from 'react';
 
 export interface OwnProps {
     link: string,
-    active?: boolean
+    exact: boolean,
 }
 
 export type Props = FC<OwnProps>;

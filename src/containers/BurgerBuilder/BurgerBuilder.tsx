@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 import {Props, IngredientsToBuildOf} from './types';
 import {Ingredients} from '../../components/Burger/BurgerIngredient/types';
@@ -28,14 +29,18 @@ const BurgerBuilder: Props= () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<AxiosError | null>(null);
 
+    const history = useHistory();
+
     useEffect(() => {
         async function fetchIngredients () {
             try {
+                setIsLoading(true);
                 const response = await axios.get('https://burger-feca9-default-rtdb.firebaseio.com/ingredients.json');
                 if (response) {
                     const ingredients: IngredientsToBuildOf = response.data;
                     setIngredients(ingredients);
                 }
+                setIsLoading(false);
             } catch (err) {
                 setError(err);
                 console.log(err);
@@ -46,7 +51,7 @@ const BurgerBuilder: Props= () => {
 
     useEffect(() => {
         if (ingredients) {
-            setPurchesable(Object.values(ingredients).some(ingAmount => ingAmount>0));
+            setPurchesable(Object.keys(ingredients).some(ing => ingredients[ing as keyof IngredientsToBuildOf]>0 && ing!==Ingredients.SeedsOne && ing!==Ingredients.SeedsTwo));
         }
     }, [ingredients]);
 
@@ -91,31 +96,17 @@ const BurgerBuilder: Props= () => {
     }
 
     const purchaseClick = async () => {
-        setIsLoading(true);
-        const order = {
-            ingredients: {...ingredients},
-            price: totalPrice,
-            customer: {
-                name: 'Nikita',
-                address: {
-                    street: 'Dibunovskaya',
-                    zipCode: '41351',
-                    country: 'Russia',
-                },
-                email: 'test@test.com'
-            },
-            deliveryMethod: 'fastest'
-        }
-        try {
-            const response = await axios.post('/orders.json', order);
-            console.log(response);
-            setIsLoading(false);
-            setIsModalOpen(false);
-        } catch (err) {
-            setIsModalOpen(false);
-            setIsLoading(false);
-            setError(err);
-            console.log(err);
+        if (ingredients) {
+            const queryParams: string[] = [];
+            queryParams.push('price='+totalPrice);
+            Object.keys(ingredients).forEach(i => {
+                queryParams.push(encodeURIComponent(i)+'='+encodeURIComponent(ingredients[i as keyof IngredientsToBuildOf]));
+            })
+            const queryString = queryParams.join('&');
+            history.push({
+                pathname: '/checkout',
+                search: '?' + queryString,
+            });
         }
     }
 

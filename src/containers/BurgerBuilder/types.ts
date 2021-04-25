@@ -10,6 +10,10 @@ export type IngredientsToBuildOf = {
     [Ingredients.SeedsTwo]: number,
 };
 
+export enum PriceQueryKey {
+    PriceQueryKey = 'price',
+}
+
 export interface OwnProps {
 
 }

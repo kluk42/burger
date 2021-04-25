@@ -16,8 +16,8 @@ const OrderSummary: Props = ({ingredients, handleCnclClick, handleCntnClick, tot
             </ul>
             <p>Continue to checkout?</p>
             <p><strong>Total Price: {total.toFixed(2)}</strong></p>
-            <Button handleClick={handleCnclClick} theme={Theme.Danger}>Cancel</Button>
-            <Button handleClick={handleCntnClick} theme={Theme.Success}>Continue</Button>
+            <Button onClick={handleCnclClick} theme={Theme.Danger}>Cancel</Button>
+            <Button onClick={handleCntnClick} theme={Theme.Success}>Continue</Button>
         </>
     )
 }

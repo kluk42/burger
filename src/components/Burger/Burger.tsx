@@ -14,11 +14,15 @@ const Burger: Props = ({ingredients}) => {
             })
         })
         .reduce((acc, current) => {return [...acc, ...current]}, []);
+
+        const isBurgerEmpty = !Object.keys(ingredients)
+            .some(i => ingredients[i as keyof IngredientsToBuildOf]>0 && i!==Ingredients.SeedsOne && i!==Ingredients.SeedsTwo);
+
         const emptyIngsSign = <p>Please start adding ingredients</p>
     return (
         <div className="Burger">
             <BurgerIngredient type={Ingredients.BreadTop}/>
-            {transFormedIngredients.length === 0 ? emptyIngsSign : transFormedIngredients}
+            {isBurgerEmpty ? emptyIngsSign : transFormedIngredients}
             <BurgerIngredient type={Ingredients.BreadBottom}/>
         </div>
     )

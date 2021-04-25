@@ -1,0 +1,25 @@
+.Input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    &__label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    &__field {
+        outline: none;
+        border: 1px solid #ccc;
+        background-color: white;
+        padding: 6px 10px;
+        display: block;
+        width: 100%;
+
+        &:focus {
+            outline: none;
+            background-color: #ccc;
+        }
+    }
+}
