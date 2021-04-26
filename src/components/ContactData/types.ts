@@ -9,7 +9,6 @@ export interface OwnProps {
 export enum InputNames {
     Name = 'name',
     Email = 'email',
-    Address = 'address',
     Street = 'street',
     PostalCode = 'postal-code',
     DeliveryMethod = 'delivery-method',
@@ -29,10 +28,16 @@ export enum DropDownItems {
     OnMyOwn = 'on my own',
 }
 
-export type ValidationRule = {
-    [key in keyof typeof InputNames]: {
-        required: boolean,
-    }
+export interface ValidationRuleSet {
+    required: boolean;
+    minLength?: number;
+    maxLength?: number;
 }
+
+export type Validity = Record<InputNames,boolean>
+
+export type ValidationRules = Record<InputNames,ValidationRuleSet>
+
+export type ValidationMessages = Record<InputNames, string>
 
 export type Props = FC<OwnProps>;

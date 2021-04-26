@@ -5,7 +5,7 @@ import { InputNames } from '../ContactData/types';
 export type OrderObj = {
     [InputNames.Name]: string;
     [InputNames.Email]: string;
-    [InputNames.Address]: {
+    address: {
         [InputNames.Street]: string,
         [InputNames.PostalCode]: string,
     };

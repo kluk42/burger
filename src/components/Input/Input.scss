@@ -17,6 +17,11 @@
         display: block;
         width: 100%;
 
+        &_invalid {
+            border: 1px solid red;
+            background-color: salmon;
+        }
+
         &:focus {
             outline: none;
             background-color: #ccc;
