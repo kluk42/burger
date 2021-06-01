@@ -1,138 +1,70 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
-import {Props, IngredientsToBuildOf} from './types';
-import {Ingredients} from '../../components/Burger/BurgerIngredient/types';
+import {Props} from './types';
 
 import axios from '../../axios-order';
 import Burger from '../../components/Burger/index';
 import BuildControls from '../../components/BuildControls/index';
+import {initIngredients} from '../../store/actions/burgerBuilder';
+import {setAuthRedirectPath} from '../../store/actions/auth';
 import Modal from '../../components/Modal/index';
 import OrderSummary from '../../components/OrderSummary';
 import Spinner from '../../components/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler';
 import { OwnProps } from './types';
-import { AxiosError } from 'axios';
-
-const INGREDIENT_PRICES = {
-    [Ingredients.Bacon]: 0.7,
-    [Ingredients.Meat]: 1.3,
-    [Ingredients.Cheese]: 0.4,
-    [Ingredients.Salad]: 0.5,
-};
+import { RootState } from '../../store/reducers/types';
+import { startOrdering } from '../../store/actions/order';
 
 const BurgerBuilder: Props= () => {
-    const [ingredients, setIngredients] = useState<IngredientsToBuildOf | null>(null);
-    const [totalPrice, setTotalPrice] = useState<number>(4);
-    const [purchesable, setPurchesable] = useState(false);
+    const isFetching = useSelector((state: RootState) => state.burgerBuilder.isFetching);
+    const error = useSelector((state: RootState) => state.burgerBuilder.error);
+    const isAuthenticated = !!useSelector((state: RootState) => state.auth.token);
+
+    const dispatch = useDispatch();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<AxiosError | null>(null);
 
     const history = useHistory();
 
-    useEffect(() => {
-        async function fetchIngredients () {
-            try {
-                setIsLoading(true);
-                const response = await axios.get('https://burger-feca9-default-rtdb.firebaseio.com/ingredients.json');
-                if (response) {
-                    const ingredients: IngredientsToBuildOf = response.data;
-                    setIngredients(ingredients);
-                }
-                setIsLoading(false);
-            } catch (err) {
-                setError(err);
-                console.log(err);
-            }
-        };
-        fetchIngredients();
-    }, [])
 
     useEffect(() => {
-        if (ingredients) {
-            setPurchesable(Object.keys(ingredients).some(ing => ingredients[ing as keyof IngredientsToBuildOf]>0 && ing!==Ingredients.SeedsOne && ing!==Ingredients.SeedsTwo));
+        if (isFetching) {
+            dispatch(initIngredients())
         }
-    }, [ingredients]);
-
-    const addIngredientHandler = (type: Ingredients) => {
-        setIngredients(() => {
-            if (type !== Ingredients.BreadTop && type !== Ingredients.BreadBottom && ingredients) {
-                return {
-                    ...ingredients,
-                    [type]: ingredients[type] + 1,
-                }
-            }
-            return ingredients
-        });
-        setTotalPrice(() => {
-            if (type !== Ingredients.SeedsOne && type !== Ingredients.SeedsTwo && type !== Ingredients.BreadTop && type !== Ingredients.BreadBottom) {
-                return INGREDIENT_PRICES[type] + totalPrice
-            }
-            return totalPrice
-        });
-    }
-
-    const removeIngredientHandler = (type: Ingredients) => {
-        setIngredients(() => {
-            if (type !== Ingredients.BreadTop && type !== Ingredients.BreadBottom && ingredients && ingredients[type]>0 ) {
-                return {
-                    ...ingredients,
-                    [type]: ingredients[type] - 1,
-                }
-            }
-            return ingredients
-        });
-        setTotalPrice(() => {
-            if (type !== Ingredients.SeedsOne && type !== Ingredients.SeedsTwo && type !== Ingredients.BreadTop && type !== Ingredients.BreadBottom && totalPrice>4) {
-                return totalPrice - INGREDIENT_PRICES[type]
-            }
-            return totalPrice
-        });
-    }
+    }, [dispatch, isFetching])
 
     const handleModalVisibility = () => {
         setIsModalOpen(() => !isModalOpen)
     }
 
     const purchaseClick = async () => {
-        if (ingredients) {
-            const queryParams: string[] = [];
-            queryParams.push('price='+totalPrice);
-            Object.keys(ingredients).forEach(i => {
-                queryParams.push(encodeURIComponent(i)+'='+encodeURIComponent(ingredients[i as keyof IngredientsToBuildOf]));
-            })
-            const queryString = queryParams.join('&');
-            history.push({
-                pathname: '/checkout',
-                search: '?' + queryString,
-            });
+        history.push('/checkout');
+    }
+
+    const handleOrderBtnClick = () => {
+        if (isAuthenticated) {
+            setIsModalOpen(() => true);
+            dispatch(startOrdering());
+        } else {
+            dispatch(setAuthRedirectPath('/checkout'));
+            history.push("/auth")
         }
     }
 
-    if (ingredients) {
+    if (!isFetching) {
         return (
             <>
                 <Modal show={isModalOpen} handleRenderModal={handleModalVisibility}>
-                    {!isLoading ?
                         <OrderSummary
-                            ingredients={ingredients}
                             handleCnclClick={handleModalVisibility}
                             handleCntnClick={purchaseClick}
-                            total={totalPrice}
                         />
-                        :
-                        <Spinner/>
-                    }
                 </Modal>
-                <Burger ingredients={ingredients}/>
+                <Burger/>
                 <BuildControls
-                    ingredientAdded={addIngredientHandler}
-                    ingredientRemoved={removeIngredientHandler}
-                    ingredients={ingredients}
-                    price={totalPrice}
-                    purchesable={purchesable}
-                    handleOrderBtnClick={() => {setIsModalOpen(() => true)}}
+                    handleOrderBtnClick={handleOrderBtnClick}
                 />
             </>
         );

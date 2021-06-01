@@ -8,7 +8,7 @@ const SideDrawer: Props = ({handleBackDropClick, isSideDrawerOpen}) => {
     return (
         <>
         <BackDrop show={isSideDrawerOpen} handleClick={handleBackDropClick}/>
-        <div className={`SideDrawer ${isSideDrawerOpen ? 'SideDrawer_open' : 'SideDrawer_closed'}`}>
+        <div className={`SideDrawer ${isSideDrawerOpen ? 'SideDrawer_open' : 'SideDrawer_closed'}`} onClick={handleBackDropClick} >
             <div className="SideDrawer__logo">
                 <Logo/>
             </div>

@@ -1,9 +1,6 @@
 import {FC} from 'react';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
 
 export interface OwnProps {
-    ingredients: IngredientsToBuildOf,
-    totalPrice: number,
 }
 
 export enum InputNames {
@@ -32,6 +29,30 @@ export interface ValidationRuleSet {
     required: boolean;
     minLength?: number;
     maxLength?: number;
+    isEmail?: boolean;
+}
+
+export type Order = {
+    ingredients: {
+        Bacon: number;
+        Cheese: number;
+        Meat: number;
+        Salad: number;
+        Seeds1: number;
+        Seeds2: number;
+    };
+    price: number;
+    customer: {
+        name: string;
+        address: {
+            street: string;
+            zipCode: number;
+            country: string;
+        };
+        email: string;
+        id: string;
+    };
+    deliveryMethod: DropDownItems;
 }
 
 export type Validity = Record<InputNames,boolean>

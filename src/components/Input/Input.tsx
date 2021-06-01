@@ -4,12 +4,14 @@ import {Props} from './types';
 import './Input.scss';
 import { useState } from 'react';
 
-const Input: Props = ({onChange, value, name, placeholder, invalid, validationMessage}) => {
+const Input: Props = ({onChange, value, name, placeholder, invalid, validationMessage, type}) => {
     const [touched, setTouched] = useState(false);
 
-    const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setTouched(true);
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e);
+    }
+    const handleBlur = () => {
+        setTouched(true);
     }
     return (
         <div className="Input">
@@ -20,8 +22,10 @@ const Input: Props = ({onChange, value, name, placeholder, invalid, validationMe
                 name={name}
                 className={`Input__field ${invalid && touched ? 'Input__field_invalid' : ''}`}
                 placeholder={placeholder}
+                onBlur={handleBlur}
+                type={type}
             />
-            {!!invalid && <p>{validationMessage}</p>}
+            {!!invalid && touched && <p>{validationMessage}</p>}
         </div>
     )
 }

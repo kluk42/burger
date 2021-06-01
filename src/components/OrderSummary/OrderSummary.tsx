@@ -3,10 +3,15 @@ import './OrderSummary.scss';
 import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
 import Button from '../Button/index';
 import {Theme} from '../Button/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reducers/types';
 
-const OrderSummary: Props = ({ingredients, handleCnclClick, handleCntnClick, total}) => {
-    const ingredientSummary = Object.keys(ingredients)
-        .map((igKey, ind) => <li key={igKey}><span style={{textTransform: 'capitalize'}}>{igKey}</span>:{ingredients[igKey as keyof IngredientsToBuildOf]}</li>)
+const OrderSummary: Props = ({handleCnclClick, handleCntnClick}) => {
+    const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
+    const total = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
+
+    const ingredientSummary = Object.keys(ingredientsFromStore)
+        .map((igKey, ind) => <li key={igKey}><span style={{textTransform: 'capitalize'}}>{igKey}</span>:{ingredientsFromStore[igKey as keyof IngredientsToBuildOf]}</li>)
     return (
         <>
             <h3>Your Order</h3>

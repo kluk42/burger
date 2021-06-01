@@ -5,7 +5,7 @@ import {Props} from './types';
 import Toolbar from '../../components/Toolbar';
 import SideDrawer from '../../components/SideDrawer';
 
-const Layout: Props = ({children}) => {
+const AsyncComponent: Props = ({children}) => {
     const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
 
     const toggleSideDrawer = () => {
@@ -22,4 +22,4 @@ const Layout: Props = ({children}) => {
     )
 }
 
-export default Layout;
+export default AsyncComponent;

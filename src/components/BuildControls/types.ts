@@ -1,19 +1,11 @@
 import {FC} from 'react';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { Ingredients } from '../Burger/BurgerIngredient/types';
+import { PurchasableIngredients } from '../../store/actions/types';
 
 export interface OwnProps {
-    ingredientAdded: (type:Ingredients) => void,
-    ingredientRemoved: (type:Ingredients) => void,
-    ingredients: IngredientsToBuildOf,
-    price: number,
-    purchesable: boolean,
     handleOrderBtnClick: () => void,
 };
 
-type Ingredient = {
-    label: Ingredients.Bacon | Ingredients.Cheese | Ingredients.Salad | Ingredients.Meat
-};
+type Ingredient = PurchasableIngredients;
 
 export type Controls = Ingredient[];
 

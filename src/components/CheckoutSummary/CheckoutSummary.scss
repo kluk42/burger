@@ -1,14 +1,10 @@
 .CheckoutSummary{
     text-align: center;;
     margin: auto;
+    width: 80%;
 
     &__burger {
         width: 100%;
-        height: 300px;
         margin: auto;
-    }
-
-    @media (min-width: 600px) {
-        width: 500px;
     }
 }

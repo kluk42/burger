@@ -1,43 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { RootState } from '../../store/reducers/types';
 import {Props} from './types';
 
 import Order from '../../components/Order';
-import { OrderObj } from '../../components/Order/types';
+import Spinner from '../../components/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler';
 
 import axios from '../../axios-order';
 
 import './Orders.scss';
-import Spinner from '../../components/Spinner';
+
+import { fetchOrders } from '../../store/actions/order';
 
 const Orders: Props= () => {
-    const [orders, setOrders] = useState<OrderObj[] | null>(null);
-    const [loading, setLoading] = useState(true);
+    const orders = useSelector((state: RootState) => state.orders.orders);
+    const isLoading = useSelector((state: RootState) => state.orders.ordersFetching);
+    const token = useSelector((state: RootState) => state.auth.token);
+    const userId = useSelector((state: RootState) => state.auth.userId);
+
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        async function fetchOrders() {
-            try {
-                const response = await axios.get('/orders.json');
-                const orders: OrderObj[] = Object.entries(response.data).map(ent => {
-                    return {
-                        ...ent[1] as OrderObj,
-                        id: ent[0]
-                    }
-                });
-                console.log(orders);
-                setLoading(false);
-                setOrders(orders);
-            }
-            catch (err) {
-                setLoading(false);
-                console.log(err);
-            }
+        if (token) {
+            dispatch(fetchOrders(token, userId))
         }
-        fetchOrders()
-    }, [])
+    }, [dispatch, token, userId])
+
     return (
         <div>
-            {   loading ? <Spinner />
+            {   isLoading ? <Spinner />
                 :
                 orders?.map(order => (
                 <Order
@@ -52,3 +45,10 @@ const Orders: Props= () => {
 }
 
 export default withErrorHandler(Orders, axios);
+
+// const orders = useSelector((state: RootState) => state.orders.orders);
+// const isLoading = useSelector((state: RootState) => state.orders.ordersFetching);
+// const dispatch = useDispatch();
+// useEffect(() => {
+//     dispatch(fetchOrders())
+// }, [dispatch])

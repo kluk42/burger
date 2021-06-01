@@ -4,19 +4,22 @@ import './Burger.scss';
 import BurgerIngredient from './BurgerIngredient/index';
 import {Ingredients} from './BurgerIngredient/types';
 import {IngredientsToBuildOf} from '../../containers/BurgerBuilder/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/reducers/types';
 
-const Burger: Props = ({ingredients}) => {
-    const transFormedIngredients = Object.keys(ingredients)
+const Burger: Props = () => {
+    const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
+    const transFormedIngredients = Object.keys(ingredientsFromStore)
         .map(ingKey => {
-            return [...Array(ingredients[ingKey as keyof IngredientsToBuildOf])]
+            return [...Array(ingredientsFromStore[ingKey as keyof IngredientsToBuildOf])]
             .map((_, index) => {
                 return <BurgerIngredient key={ingKey + index} type={ingKey as keyof IngredientsToBuildOf}/>;
             })
         })
         .reduce((acc, current) => {return [...acc, ...current]}, []);
 
-        const isBurgerEmpty = !Object.keys(ingredients)
-            .some(i => ingredients[i as keyof IngredientsToBuildOf]>0 && i!==Ingredients.SeedsOne && i!==Ingredients.SeedsTwo);
+        const isBurgerEmpty = !Object.keys(ingredientsFromStore)
+            .some(i => ingredientsFromStore[i as keyof IngredientsToBuildOf]>0 && i!==Ingredients.SeedsOne && i!==Ingredients.SeedsTwo);
 
         const emptyIngsSign = <p>Please start adding ingredients</p>
     return (

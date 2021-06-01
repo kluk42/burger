@@ -1,11 +1,8 @@
 import {FC} from 'react';
-import {Ingredients} from '../Burger/BurgerIngredient/types';
+import { PurchasableIngredients } from '../../store/actions/types';
 
 export interface OwnProps {
-    label: Ingredients,
-    added: () => void,
-    removed: () => void,
-    removeDisabled: boolean,
+    label: PurchasableIngredients,
 }
 
 export type Props = FC<OwnProps>;

@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {Props} from './types';
 import './NavigationItem.scss';
 
-const NavigationItem: Props = ({children, link, exact}) => {
+const NavigationItem: Props = ({children, link, exact, handleLinkClick}) => {
     return (
         <li className="NavigationItem">
             <NavLink
@@ -11,6 +11,7 @@ const NavigationItem: Props = ({children, link, exact}) => {
                 className="NavigationItem__link"
                 activeClassName="NavigationItem__link_active"
                 exact={exact}
+                onClick={handleLinkClick}
             >
                 {children}
             </NavLink>
