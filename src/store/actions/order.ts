@@ -103,6 +103,7 @@ export const fetchOrders = (token: string, userId: string) => {
     try {
       const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo"' + userId + '"';
       const response = await axios.get('/orders.json' + queryParams);
+      // eslint-disable-next-line
       const orders: OrderFromServer[] = Object.entries(response.data).map(ent => {
         return {
           ...(ent[1] as OrderFromServer),

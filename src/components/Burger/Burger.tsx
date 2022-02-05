@@ -8,7 +8,6 @@ import { Props } from './types';
 
 const Burger: Props = () => {
   const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  console.log('sraka');
   const transFormedIngredients = Object.keys(ingredientsFromStore)
     .map(ingKey => {
       return [...Array(ingredientsFromStore[ingKey as keyof IngredientsToBuildOf])].map(

@@ -1,6 +1,5 @@
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-
 import authReducer from './reducers/auth';
 import burgerBuilderReducer from './reducers/burgerBuilder';
 import ordersReducer from './reducers/order';
@@ -17,5 +16,6 @@ const rootReducer = {
 
 export const store = createStore(
   combineReducers(rootReducer),
+  // eslint-disable-next-line
   composeEnhancers(applyMiddleware(thunk))
 );
