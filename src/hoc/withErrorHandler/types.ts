@@ -1,7 +1,7 @@
-import {FC} from 'react';
+import { FC } from 'react';
 
 export interface OwnProps {
-    isDataFetching: boolean,
+  isDataFetching: boolean;
 }
 
 export type Props = FC<OwnProps>;

@@ -1,0 +1,6 @@
+*.css
+*.svg
+*.scss
+node_modules
+*.js
+react-app-env.d.ts

@@ -1,1 +1,1 @@
-export {default} from './BuildControl';
+export { default } from './BuildControl';

@@ -1,9 +1,9 @@
-import {FC} from 'react';
+import { FC } from 'react';
 import { PurchasableIngredients } from '../../store/actions/types';
 
 export interface OwnProps {
-    handleOrderBtnClick: () => void,
-};
+  handleOrderBtnClick: () => void;
+}
 
 type Ingredient = PurchasableIngredients;
 

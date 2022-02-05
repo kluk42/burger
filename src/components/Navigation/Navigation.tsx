@@ -1,12 +1,8 @@
-import {Props} from './types';
+import { Props } from './types';
 import './Navigation.scss';
 
 const Navigation: Props = () => {
-    return (
-        <>
-
-        </>
-    )
-}
+  return <></>;
+};
 
 export default Navigation;

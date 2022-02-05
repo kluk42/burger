@@ -1,8 +1,8 @@
-import {FC} from 'react';
+import { FC } from 'react';
 
 export interface OwnProps {
-    handleCnclClick: () => void,
-    handleCntnClick: () => void,
+  handleCnclClick: () => void;
+  handleCntnClick: () => void;
 }
 
 export type Props = FC<OwnProps>;

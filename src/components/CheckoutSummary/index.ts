@@ -1,1 +1,1 @@
-export {default} from './CheckoutSummary';
+export { default } from './CheckoutSummary';

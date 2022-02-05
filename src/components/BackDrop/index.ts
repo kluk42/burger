@@ -1,1 +1,1 @@
-export {default} from './BackDrop';
+export { default } from './BackDrop';
