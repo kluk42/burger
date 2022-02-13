@@ -1,6 +1,14 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
-import { BurgerBuilderInitialState, BurgerBuilderActions } from './types';
-import { ActionNames } from '../actions/types';
+import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { BAppDispatch, BAppThunk } from '../store';
+import {
+  BurgerBuilderInitialState,
+  PayloadFetchingFailed,
+  PayloadFetchIngredients,
+  PayloadToHandleIngredients,
+} from './types';
 
 export const ingredientsPrices = {
   [Ingredients.Bacon]: 0.7,
@@ -24,62 +32,66 @@ const initialState: BurgerBuilderInitialState = {
   building: false,
 };
 
-const reducer = (
-  state: BurgerBuilderInitialState = initialState,
-  action: BurgerBuilderActions
-): BurgerBuilderInitialState => {
-  switch (action.type) {
-    case ActionNames.ADD_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] + 1,
-        },
-        totalPrice: state.totalPrice + ingredientsPrices[action.payload.ingredientName],
-        building: true,
+export const slice = createSlice({
+  name: 'burgerBuilder',
+  initialState,
+  reducers: {
+    addIngredient: (state, action: PayloadAction<PayloadToHandleIngredients>) => {
+      ++state.ingredients[action.payload.ingredientName];
+      state.totalPrice += ingredientsPrices[action.payload.ingredientName];
+      state.building = true;
+    },
+    removeIngredient: (state, action: PayloadAction<PayloadToHandleIngredients>) => {
+      --state.ingredients[action.payload.ingredientName];
+      state.totalPrice -= ingredientsPrices[action.payload.ingredientName];
+      state.building = true;
+    },
+    setIngredients: (state, action: PayloadAction<PayloadFetchIngredients>) => {
+      state.ingredients = { ...action.payload.ingredients };
+      state.isFetching = action.payload.fetching;
+      state.error = false;
+      state.totalPrice = 4;
+      state.building = false;
+    },
+    fetchIngredientsFailed: (state, action: PayloadAction<PayloadFetchingFailed>) => {
+      state.error = action.payload.error;
+    },
+    resetIngredients: state => {
+      state.ingredients = {
+        [Ingredients.Bacon]: 0,
+        [Ingredients.Cheese]: 0,
+        [Ingredients.Meat]: 0,
+        [Ingredients.Salad]: 0,
+        [Ingredients.SeedsOne]: 1,
+        [Ingredients.SeedsTwo]: 1,
       };
-    case ActionNames.REMOVE_INGREDIENT:
-      return {
-        ...state,
-        ingredients: {
-          ...state.ingredients,
-          [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] - 1,
-        },
-        totalPrice: state.totalPrice - ingredientsPrices[action.payload.ingredientName],
-        building: true,
-      };
-    case ActionNames.SET_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          ...action.payload.ingredients,
-        },
-        isFetching: action.payload.fetching,
-        error: false,
-        totalPrice: 4,
-        building: false,
-      };
-    case ActionNames.FETCH_INGREDIENTS_FAILED:
-      return {
-        ...state,
-        error: action.payload.error,
-      };
-    case ActionNames.RESET_INGREDIENTS:
-      return {
-        ...state,
-        ingredients: {
-          [Ingredients.Bacon]: 0,
-          [Ingredients.Cheese]: 0,
-          [Ingredients.Meat]: 0,
-          [Ingredients.Salad]: 0,
-          [Ingredients.SeedsOne]: 1,
-          [Ingredients.SeedsTwo]: 1,
-        },
-      };
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default reducer;
+export default slice.reducer;
+
+export const {
+  addIngredient,
+  removeIngredient,
+  setIngredients,
+  fetchIngredientsFailed,
+  resetIngredients,
+} = slice.actions;
+
+export const initIngredients = (): BAppThunk => {
+  return async (dispatch: BAppDispatch) => {
+    try {
+      const response = await axios.get(
+        'https://burger-feca9-default-rtdb.firebaseio.com/ingredients.json'
+      );
+      if (response) {
+        const ingredients: IngredientsToBuildOf = response.data;
+        dispatch(setIngredients({ fetching: false, ingredients }));
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(fetchIngredientsFailed({ error: true }));
+    }
+  };
+};
