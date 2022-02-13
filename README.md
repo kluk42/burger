@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-TODO:
+# TODO:
 
 - Add forms validation with React Hook Form
 - Migrate to slices
