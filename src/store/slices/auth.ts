@@ -23,7 +23,7 @@ export const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    start: state => {
+    startAuth: state => {
       state.loading = true;
       state.error = '';
     },
@@ -54,7 +54,7 @@ export const slice = createSlice({
 
 export default slice.reducer;
 
-export const { start, success, fail, logOut, setRedirectPath } = slice.actions;
+export const { startAuth, success, fail, logOut, setRedirectPath } = slice.actions;
 
 export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
   return (dispatch: BAppDispatch) => {

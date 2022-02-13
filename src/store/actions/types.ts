@@ -1,5 +1,10 @@
-import { ingredientsPrices } from '../reducers/burgerBuilder';
+import { ingredientsPrices } from '../slices/burgerBuilder';
 import {
+  AuthFailPayload,
+  AuthLogoutPayload,
+  AuthSetRedirectPathPayload,
+  AuthStartPayload,
+  AuthSuccessPayload,
   FetchOrdersFailPayload,
   FetchOrdersPayload,
   PayloadFetchingFailed,
@@ -8,12 +13,7 @@ import {
   PurchaseBurgerFailPayload,
   PurchaseBurgerSuccessPayload,
   ResetIngredientsPayload,
-  AuthStartPayload,
-  AuthSuccessPayload,
-  AuthFailPayload,
-  AuthLogoutPayload,
-  AuthSetRedirectPathPayload,
-} from '../reducers/types';
+} from '../slices/types';
 
 export enum ActionNames {
   ADD_INGREDIENT = 'ADD_INGREDIENT',

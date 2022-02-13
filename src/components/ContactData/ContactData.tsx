@@ -1,30 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import {
-  Props,
-  InputData,
-  DropDownItems,
-  InputNames,
-  ValidationRules,
-  ValidationRuleSet,
-  Validity,
-  ValidationMessages,
-  Order,
-  OwnProps,
-} from './types';
-import { Theme } from '../Button/types';
-
-import './ContactData.scss';
-import { RootState } from '../../store/reducers/types';
-import { purchaseBurger } from '../../store/actions/order';
-
+import { useSelector } from 'react-redux';
 import axios from '../../axios-order';
+import { useBAppDispatch } from '../../helpers/hooks';
+import WithErrorHandler from '../../hoc/withErrorHandler';
+import { purchaseBurger } from '../../store/actions/order';
+import { RootState } from '../../store/slices/types';
 import Button from '../Button';
+import { Theme } from '../Button/types';
 import Dropdown from '../Dropdown';
 import Input from '../Input';
 import Spinner from '../Spinner';
-import WithErrorHandler from '../../hoc/withErrorHandler';
+import './ContactData.scss';
+import {
+  DropDownItems,
+  InputData,
+  InputNames,
+  Order,
+  OwnProps,
+  Props,
+  ValidationMessages,
+  ValidationRules,
+  ValidationRuleSet,
+  Validity,
+} from './types';
 
 const validationRules: ValidationRules = {
   [InputNames.Name]: {
@@ -76,7 +74,7 @@ const ContactData: Props = () => {
     [InputNames.DeliveryMethod]: '',
   });
   const [isFormValid, setIsFormValid] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   useEffect(() => {
     const overAllValidity = Object.values(validity).reduce(

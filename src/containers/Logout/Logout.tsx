@@ -1,15 +1,12 @@
-import { Redirect } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { Redirect } from 'react-router-dom';
+import { useBAppDispatch } from '../../helpers/hooks';
 import { logOut } from '../../store/actions';
-
+import './Logout.scss';
 import { Props } from './types';
 
-import './Logout.scss';
-
 const Logout: Props = () => {
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   useEffect(() => {
     dispatch(logOut());

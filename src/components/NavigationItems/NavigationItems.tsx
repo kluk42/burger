@@ -1,16 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Props } from './types';
-import { RootState } from '../../store/reducers/types';
-
-import './NavigationItems.scss';
-
-import NavigationItem from '../NavigationItem/index';
+import { useSelector } from 'react-redux';
+import { useBAppDispatch } from '../../helpers/hooks';
 import { fetchOrdersStart } from '../../store/actions/order';
+import { RootState } from '../../store/slices/types';
+import NavigationItem from '../NavigationItem/index';
+import './NavigationItems.scss';
+import { Props } from './types';
 
 const NavigationItems: Props = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
   const handleOrdersLinkClick = () => {
     dispatch(fetchOrdersStart());
   };

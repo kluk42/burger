@@ -1,8 +1,8 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { AnyAction, compose } from 'redux';
-import authReducer from './reducers/auth';
-import burgerBuilderReducer from './reducers/burgerBuilder';
-import ordersReducer from './reducers/order';
+import authReducer from './slices/auth';
+import burgerBuilderReducer from './slices/burgerBuilder';
+import ordersReducer from './slices/order';
 
 const composeEnhancers =
   process.env.NODE_ENV === 'development'
@@ -15,15 +15,8 @@ const rootReducer = {
   orders: ordersReducer,
 };
 
-// export const store = createStore(
-//   combineReducers(rootReducer),
-//   // eslint-disable-next-line
-//   composeEnhancers(applyMiddleware(thunk))
-// );
-
 export const store = configureStore({
   reducer: rootReducer,
-  enhancers: composeEnhancers,
 });
 
 export type BAppRootState = ReturnType<typeof store.getState>;

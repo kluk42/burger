@@ -1,12 +1,13 @@
-import { Props } from './types';
-import './BuildControl.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/reducers/types';
+import { useSelector } from 'react-redux';
+import { useBAppDispatch } from '../../helpers/hooks';
 import { addIngredient, removeIngredient } from '../../store/actions';
+import { RootState } from '../../store/slices/types';
+import './BuildControl.scss';
+import { Props } from './types';
 
 const BuildControl: Props = ({ label }) => {
   const ingredients = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   const handleAdd = () => {
     dispatch(addIngredient(label));

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
 import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { BAppDispatch, BAppThunk } from '../store';
+import { BAppThunk } from '../store';
 import {
   BurgerBuilderInitialState,
   PayloadFetchingFailed,
@@ -80,7 +80,7 @@ export const {
 } = slice.actions;
 
 export const initIngredients = (): BAppThunk => {
-  return async (dispatch: BAppDispatch) => {
+  return async dispatch => {
     try {
       const response = await axios.get(
         'https://burger-feca9-default-rtdb.firebaseio.com/ingredients.json'

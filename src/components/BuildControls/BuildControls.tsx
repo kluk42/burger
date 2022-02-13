@@ -1,11 +1,11 @@
-import { Props, Controls } from './types';
-import './BuildControls.scss';
-import { Ingredients } from '../Burger/BurgerIngredient/types';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import BuildControl from '../BuildControl/index';
-import { useState, useEffect } from 'react';
-import { RootState } from '../../store/reducers/types';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { RootState } from '../../store/slices/types';
+import BuildControl from '../BuildControl/index';
+import { Ingredients } from '../Burger/BurgerIngredient/types';
+import './BuildControls.scss';
+import { Controls, Props } from './types';
 
 const controls: Controls = [
   Ingredients.Bacon,
