@@ -8,7 +8,7 @@ import Logout from '../containers/Logout';
 import Orders from '../containers/Orders';
 import { useBAppDispatch } from '../helpers/hooks';
 import Layout from '../hoc/Layout/index';
-import { authCheckState } from '../store/actions';
+import { authCheckState } from '../store/slices/auth';
 import { RootState } from '../store/slices/types';
 import './App.scss';
 

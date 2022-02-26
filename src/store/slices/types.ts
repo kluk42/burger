@@ -1,8 +1,8 @@
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { ActionNames, PurchasableIngredients } from '../actions/types';
-import { Order } from '../../components/ContactData/types';
 import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
+import { Order } from '../../components/ContactData/types';
 import { OrderFromServer } from '../../components/Order/types';
+import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { PurchasableIngredients } from './burgerBuilder';
 
 export type BurgerBuilderInitialState = {
   ingredients: IngredientsToBuildOf;
@@ -34,14 +34,6 @@ export type ResetIngredientsPayload = {
     [Ingredients.SeedsOne]: 1;
     [Ingredients.SeedsTwo]: 1;
   };
-};
-
-export type BurgerBuilderActions = {
-  type: ActionNames;
-  payload: PayloadToHandleIngredients &
-    PayloadFetchIngredients &
-    PayloadFetchingFailed &
-    ResetIngredientsPayload;
 };
 
 export type OrdersInitialState = {
@@ -77,16 +69,6 @@ export type FetchOrdersFailPayload = {
   error: boolean;
 };
 
-export type OrderActions = {
-  type: ActionNames;
-  payload: PurchaseBurgerSuccessPayload &
-    PurchaseBurgerFailPayload &
-    FetchOrdersPayload &
-    FetchOrdersFailPayload;
-};
-
-export type AuthStartPayload = {};
-
 export type AuthSuccessPayload = {
   token: string;
   userId: string;
@@ -96,20 +78,8 @@ export type AuthFailPayload = {
   errMessage: string;
 };
 
-export type AuthLogoutPayload = {};
-
 export type AuthSetRedirectPathPayload = {
   path: string;
-};
-
-export type AuthActions = {
-  type: ActionNames;
-  payload: AuthStartPayload &
-    AuthSuccessPayload &
-    AuthFailPayload &
-    AuthLogoutPayload &
-    AuthLogoutPayload &
-    AuthSetRedirectPathPayload;
 };
 
 export type RootState = {

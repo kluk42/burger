@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { fetchOrdersStart } from '../../store/actions/order';
+import { initFetchingOrders } from '../../store/slices/order';
 import { RootState } from '../../store/slices/types';
 import NavigationItem from '../NavigationItem/index';
 import './NavigationItems.scss';
@@ -10,7 +10,7 @@ const NavigationItems: Props = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useBAppDispatch();
   const handleOrdersLinkClick = () => {
-    dispatch(fetchOrdersStart());
+    dispatch(initFetchingOrders());
   };
   return (
     <ul className="NavigationItems">

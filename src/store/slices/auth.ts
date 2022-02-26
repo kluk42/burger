@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
 import { firebaseErrMessageHandler } from '../../helpers/FirebaseErrMessageHandler';
 import { isFirebaseErrorData } from '../../TypeGuards/isFirebaseErrorData';
-import { AuthResponseData, LocalStorageKeys } from '../actions/types';
 import { BAppDispatch, BAppThunk } from '../store';
 import {
   AuthFailPayload,
@@ -10,6 +9,27 @@ import {
   AuthSetRedirectPathPayload,
   AuthSuccessPayload,
 } from './types';
+
+export type AuthResponseData = {
+  email: string;
+  expiresIn: string;
+  idToken: string;
+  kind: string;
+  localId: string;
+  refreshToken: string;
+};
+
+export type AuthResponse = {
+  data: AuthResponseData;
+  status: number;
+  statusText: string;
+};
+
+enum LocalStorageKeys {
+  Token = 'token',
+  ExpirationDate = 'ExpirationDate',
+  UserId = 'userId',
+}
 
 const initialState: AuthRootState = {
   userId: '',

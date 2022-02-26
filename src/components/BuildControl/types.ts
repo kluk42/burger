@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { PurchasableIngredients } from '../../store/actions/types';
+import { PurchasableIngredients } from '../../store/slices/burgerBuilder';
 
 export interface OwnProps {
   label: PurchasableIngredients;

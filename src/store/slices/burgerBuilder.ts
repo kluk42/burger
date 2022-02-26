@@ -17,6 +17,8 @@ export const ingredientsPrices = {
   [Ingredients.Salad]: 0.5,
 };
 
+export type PurchasableIngredients = keyof typeof ingredientsPrices;
+
 const initialState: BurgerBuilderInitialState = {
   ingredients: {
     [Ingredients.Bacon]: 0,
@@ -65,6 +67,7 @@ export const slice = createSlice({
         [Ingredients.SeedsOne]: 1,
         [Ingredients.SeedsTwo]: 1,
       };
+      state.totalPrice = initialState.totalPrice;
     },
   },
 });

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import axios from '../../axios-order';
 import { useBAppDispatch } from '../../helpers/hooks';
 import WithErrorHandler from '../../hoc/withErrorHandler';
-import { purchaseBurger } from '../../store/actions/order';
+import { purchaseBurger } from '../../store/slices/order';
 import { RootState } from '../../store/slices/types';
 import Button from '../Button';
 import { Theme } from '../Button/types';

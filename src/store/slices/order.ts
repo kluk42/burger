@@ -38,6 +38,7 @@ export const slice = createSlice({
     },
     fetchingOrderSuccess: (state, action: PayloadAction<FetchOrdersPayload>) => {
       state.orders = action.payload.orders;
+      state.ordersFetching = false;
     },
     fetchingOrdersFail: state => {
       state.error = true;
