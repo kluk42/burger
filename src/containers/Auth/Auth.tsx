@@ -1,26 +1,23 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { Props, InputData } from './types';
-import {
-  InputNames,
-  ValidationRules,
-  Validity,
-  ValidationMessages,
-  ValidationRuleSet,
-} from './types';
-import { RootState } from '../../store/reducers/types';
-import { Theme } from '../../components/Button/types';
-
-import { auth, authStart, setAuthRedirectPath } from '../../store/actions';
-
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
 import Button from '../../components/Button';
+import { Theme } from '../../components/Button/types';
 import Input from '../../components/Input';
 import Spinner from '../../components/Spinner';
-
+import { useBAppDispatch } from '../../helpers/hooks';
+import { auth, setAuthRedirectPath, startAuth } from '../../store/slices/auth';
+import { RootState } from '../../store/slices/types';
 import './Auth.scss';
-import { Redirect } from 'react-router';
+import {
+  InputData,
+  InputNames,
+  Props,
+  ValidationMessages,
+  ValidationRules,
+  ValidationRuleSet,
+  Validity,
+} from './types';
 
 const validationRules: ValidationRules = {
   [InputNames.Email]: {
@@ -40,7 +37,7 @@ const Toolbar: Props = () => {
   const isBurgerBuilding = useSelector((state: RootState) => state.burgerBuilder.building);
   const authRedirectPath = useSelector((state: RootState) => state.auth.authRedirectPath);
 
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   const [isSignUp, setIsSignUp] = useState(true);
   const [inputData, setInputData] = useState<InputData>({
@@ -59,7 +56,7 @@ const Toolbar: Props = () => {
 
   useEffect(() => {
     if (!isBurgerBuilding && authRedirectPath !== '/') {
-      dispatch(setAuthRedirectPath('/'));
+      dispatch(setAuthRedirectPath({ path: '/' }));
     }
   }, [isBurgerBuilding, authRedirectPath, dispatch]);
 
@@ -118,7 +115,7 @@ const Toolbar: Props = () => {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(authStart());
+    dispatch(startAuth());
     dispatch(auth(inputData[InputNames.Email], inputData[InputNames.Password], isSignUp));
   };
 

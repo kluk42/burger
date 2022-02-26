@@ -1,13 +1,11 @@
 import { useSelector } from 'react-redux';
 import { Redirect, Route, useRouteMatch } from 'react-router-dom';
-
-import './Checkout.scss';
-
+import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
 import CheckoutSummary from '../../components/CheckoutSummary';
 import ContactData from '../../components/ContactData';
+import { RootState } from '../../store/slices/types';
+import './Checkout.scss';
 import { Props } from './types';
-import { RootState } from '../../store/reducers/types';
-import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
 
 const Checkout: Props = () => {
   const match = useRouteMatch();

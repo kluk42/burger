@@ -1,10 +1,10 @@
-import { Props } from './types';
-import './OrderSummary.scss';
+import { useSelector } from 'react-redux';
 import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { RootState } from '../../store/slices/types';
 import Button from '../Button/index';
 import { Theme } from '../Button/types';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/reducers/types';
+import './OrderSummary.scss';
+import { Props } from './types';
 
 const OrderSummary: Props = ({ handleCnclClick, handleCntnClick }) => {
   const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);

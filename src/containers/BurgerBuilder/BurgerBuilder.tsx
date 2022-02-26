@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import axios from '../../axios-order';
 import BuildControls from '../../components/BuildControls/index';
@@ -7,11 +7,12 @@ import Burger from '../../components/Burger/index';
 import Modal from '../../components/Modal/index';
 import OrderSummary from '../../components/OrderSummary';
 import Spinner from '../../components/Spinner';
+import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import { setAuthRedirectPath } from '../../store/actions/auth';
-import { initIngredients } from '../../store/actions/burgerBuilder';
-import { startOrdering } from '../../store/actions/order';
-import { RootState } from '../../store/reducers/types';
+import { setAuthRedirectPath } from '../../store/slices/auth';
+import { initIngredients } from '../../store/slices/burgerBuilder';
+import { startOrder } from '../../store/slices/order';
+import { RootState } from '../../store/slices/types';
 import { OwnProps, Props } from './types';
 
 const BurgerBuilder: Props = () => {
@@ -19,7 +20,7 @@ const BurgerBuilder: Props = () => {
   const error = useSelector((state: RootState) => state.burgerBuilder.error);
   const isAuthenticated = !!useSelector((state: RootState) => state.auth.token);
 
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,9 +43,9 @@ const BurgerBuilder: Props = () => {
   const handleOrderBtnClick = () => {
     if (isAuthenticated) {
       setIsModalOpen(() => true);
-      dispatch(startOrdering());
+      dispatch(startOrder());
     } else {
-      dispatch(setAuthRedirectPath('/checkout'));
+      dispatch(setAuthRedirectPath({ path: '/checkout' }));
       history.push('/auth');
     }
   };

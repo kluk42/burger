@@ -1,22 +1,19 @@
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-
-import './App.scss';
-
-import { authCheckState } from '../store/actions';
-
-import { RootState } from '../store/reducers/types';
-
 import Auth from '../containers/Auth';
-import Layout from '../hoc/Layout/index';
 import BurgerBuilder from '../containers/BurgerBuilder';
 import Checkout from '../containers/Checkout';
 import Logout from '../containers/Logout';
 import Orders from '../containers/Orders';
+import { useBAppDispatch } from '../helpers/hooks';
+import Layout from '../hoc/Layout/index';
+import { authCheckState } from '../store/slices/auth';
+import { RootState } from '../store/slices/types';
+import './App.scss';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
   const isAuthenticated = useSelector<RootState, boolean>(state => state.auth.token !== '');
 
   const routes = () => {

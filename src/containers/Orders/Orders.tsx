@@ -1,18 +1,14 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { RootState } from '../../store/reducers/types';
-import { Props } from './types';
-
+import { useSelector } from 'react-redux';
+import axios from '../../axios-order';
 import Order from '../../components/Order';
 import Spinner from '../../components/Spinner';
+import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-
-import axios from '../../axios-order';
-
+import { fetchOrders } from '../../store/slices/order';
+import { RootState } from '../../store/slices/types';
 import './Orders.scss';
-
-import { fetchOrders } from '../../store/actions/order';
+import { Props } from './types';
 
 const Orders: Props = () => {
   const orders = useSelector((state: RootState) => state.orders.orders);
@@ -20,7 +16,7 @@ const Orders: Props = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
-  const dispatch = useDispatch();
+  const dispatch = useBAppDispatch();
 
   useEffect(() => {
     if (token) {
@@ -42,10 +38,3 @@ const Orders: Props = () => {
 };
 
 export default withErrorHandler(Orders, axios);
-
-// const orders = useSelector((state: RootState) => state.orders.orders);
-// const isLoading = useSelector((state: RootState) => state.orders.ordersFetching);
-// const dispatch = useDispatch();
-// useEffect(() => {
-//     dispatch(fetchOrders())
-// }, [dispatch])
