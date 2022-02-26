@@ -46,7 +46,7 @@ export const slice = createSlice({
       state.token = '';
       state.userId = '';
     },
-    setRedirectPath: (state, action: PayloadAction<AuthSetRedirectPathPayload>) => {
+    setAuthRedirectPath: (state, action: PayloadAction<AuthSetRedirectPathPayload>) => {
       state.authRedirectPath = action.payload.path;
     },
   },
@@ -54,7 +54,7 @@ export const slice = createSlice({
 
 export default slice.reducer;
 
-export const { startAuth, success, fail, logOut, setRedirectPath } = slice.actions;
+export const { startAuth, success, fail, logOut, setAuthRedirectPath } = slice.actions;
 
 export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
   return (dispatch: BAppDispatch) => {

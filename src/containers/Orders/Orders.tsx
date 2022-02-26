@@ -5,7 +5,7 @@ import Order from '../../components/Order';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import { fetchOrders } from '../../store/actions/order';
+import { fetchOrders } from '../../store/slices/order';
 import { RootState } from '../../store/slices/types';
 import './Orders.scss';
 import { Props } from './types';

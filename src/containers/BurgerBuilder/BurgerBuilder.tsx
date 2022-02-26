@@ -9,7 +9,7 @@ import OrderSummary from '../../components/OrderSummary';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import { setRedirectPath } from '../../store/slices/auth';
+import { setAuthRedirectPath } from '../../store/slices/auth';
 import { initIngredients } from '../../store/slices/burgerBuilder';
 import { startOrder } from '../../store/slices/order';
 import { RootState } from '../../store/slices/types';
@@ -45,7 +45,7 @@ const BurgerBuilder: Props = () => {
       setIsModalOpen(() => true);
       dispatch(startOrder());
     } else {
-      dispatch(setRedirectPath({ path: '/checkout' }));
+      dispatch(setAuthRedirectPath({ path: '/checkout' }));
       history.push('/auth');
     }
   };

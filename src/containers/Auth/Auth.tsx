@@ -6,7 +6,7 @@ import { Theme } from '../../components/Button/types';
 import Input from '../../components/Input';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { auth, authStart, setAuthRedirectPath } from '../../store/actions';
+import { auth, setAuthRedirectPath, startAuth } from '../../store/slices/auth';
 import { RootState } from '../../store/slices/types';
 import './Auth.scss';
 import {
@@ -56,7 +56,7 @@ const Toolbar: Props = () => {
 
   useEffect(() => {
     if (!isBurgerBuilding && authRedirectPath !== '/') {
-      dispatch(setAuthRedirectPath('/'));
+      dispatch(setAuthRedirectPath({ path: '/' }));
     }
   }, [isBurgerBuilding, authRedirectPath, dispatch]);
 
@@ -115,7 +115,7 @@ const Toolbar: Props = () => {
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(authStart());
+    dispatch(startAuth());
     dispatch(auth(inputData[InputNames.Email], inputData[InputNames.Password], isSignUp));
   };
 

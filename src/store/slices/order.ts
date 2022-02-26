@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axios from '../../axios-order';
 import { Order } from '../../components/ContactData/types';
 import { OrderFromServer } from '../../components/Order/types';
 import { BAppDispatch } from '../store';

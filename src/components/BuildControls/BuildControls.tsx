@@ -18,8 +18,8 @@ const BuildControls: Props = ({ handleOrderBtnClick }) => {
   const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
   const price = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
   const isAuthenticated = !!useSelector((state: RootState) => state.auth.token);
-
   const [purchesable, setPurchesable] = useState(false);
+
   useEffect(() => {
     setPurchesable(
       Object.keys(ingredientsFromStore).some(
