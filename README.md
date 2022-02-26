@@ -5,5 +5,6 @@ Small application to order burgers. Infrastructure: React, Redux, Axios, Firebas
 # TODO:
 
 - Add forms validation with React Hook Form
+- Add clsx
 - Use React Query together with thunk
 - Add refresh token middleware
