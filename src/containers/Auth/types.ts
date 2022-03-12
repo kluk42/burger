@@ -1,18 +1,12 @@
 import { FC } from 'react';
+import { RegisterOptions } from 'react-hook-form';
 
 export enum InputNames {
   Email = 'email',
   Password = 'password',
 }
 
-export interface ValidationRuleSet {
-  required: boolean;
-  minLength?: number;
-  maxLength?: number;
-  isEmail?: boolean;
-}
-
-export type ValidationRules = Record<InputNames, ValidationRuleSet>;
+export type ValidationRules = Record<InputNames, RegisterOptions>;
 
 export interface InputData {
   [InputNames.Email]: string;

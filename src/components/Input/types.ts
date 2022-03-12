@@ -7,7 +7,7 @@ type BaseInputType = React.DetailedHTMLProps<
 
 export type OwnProps = {
   invalid?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   validationMessage?: string;
 } & BaseInputType;
 

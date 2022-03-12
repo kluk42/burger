@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import axios from '../../axios-order';
 import { useBAppDispatch } from '../../helpers/hooks';
@@ -18,10 +19,7 @@ import {
   Order,
   OwnProps,
   Props,
-  ValidationMessages,
   ValidationRules,
-  ValidationRuleSet,
-  Validity,
 } from './types';
 
 const validationRules: ValidationRules = {
@@ -51,6 +49,8 @@ const ContactData: Props = () => {
   const isPurchasing = useSelector((state: RootState) => state.orders.purchasing);
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const dispatch = useBAppDispatch();
+  const { register } = useForm<InputData>();
 
   const [inputData, setInputData] = useState<InputData>({
     [InputNames.Email]: '',
@@ -59,29 +59,6 @@ const ContactData: Props = () => {
     [InputNames.PostalCode]: '',
     [InputNames.DeliveryMethod]: DropDownItems.Fastest,
   });
-  const [validity, setValidity] = useState<Validity>({
-    [InputNames.Name]: false,
-    [InputNames.Email]: false,
-    [InputNames.Street]: false,
-    [InputNames.PostalCode]: false,
-    [InputNames.DeliveryMethod]: true,
-  });
-  const [validationMessages, setValidationMessages] = useState<ValidationMessages>({
-    [InputNames.Name]: '',
-    [InputNames.Email]: '',
-    [InputNames.Street]: '',
-    [InputNames.PostalCode]: '',
-    [InputNames.DeliveryMethod]: '',
-  });
-  const [isFormValid, setIsFormValid] = useState(false);
-  const dispatch = useBAppDispatch();
-
-  useEffect(() => {
-    const overAllValidity = Object.values(validity).reduce(
-      (res, fieldValidity) => res && fieldValidity
-    );
-    setIsFormValid(overAllValidity);
-  }, [validity]);
 
   const orderHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,54 +81,6 @@ const ContactData: Props = () => {
     dispatch(purchaseBurger(order, token));
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const { value, name } = e.currentTarget;
-    setInputData({
-      ...inputData,
-      [name as InputNames]: value,
-    });
-    setValidity(validity => {
-      return {
-        ...validity,
-        [name]: checkValidity(value, validationRules[name as InputNames], name as InputNames),
-      };
-    });
-  };
-
-  const checkValidity = (value: string, rules: ValidationRuleSet, name: InputNames) => {
-    let isValid = false;
-    let message = '';
-    if (rules.required) {
-      isValid = value.trim() !== '';
-      message = isValid ? message : message + ' This field is required.';
-    }
-    if (rules.minLength) {
-      const currentValidity = value.length >= rules.minLength;
-      isValid = currentValidity && isValid;
-      message = currentValidity ? message : message + ` The minimal length is ${rules.minLength}.`;
-    }
-    if (rules.maxLength) {
-      const currentValidity = value.length <= rules.maxLength;
-      isValid = currentValidity && isValid;
-      message = currentValidity ? message : message + ` The max length is ${rules.maxLength}.`;
-    }
-    if (rules.isEmail) {
-      const pattern = /^\S+@\S+\.\S+$/;
-      const currentValidity = pattern.test(value);
-      isValid = currentValidity && isValid;
-      message = currentValidity ? message : message + ' Enter valid email';
-    }
-    setValidationMessages(msgs => {
-      return {
-        ...msgs,
-        [name]: message,
-      };
-    });
-    return isValid;
-  };
-
   return (
     <div className="ContactData">
       <h3>Entry your contact data</h3>
@@ -161,48 +90,36 @@ const ContactData: Props = () => {
         <form onSubmit={orderHandler}>
           <Input
             type="text"
-            name={InputNames.Name}
-            value={inputData[InputNames.Name]}
             placeholder="Your name"
-            onChange={handleInputChange}
-            invalid={!validity[InputNames.Name]}
-            validationMessage={validationMessages[InputNames.Name]}
+            invalid={false}
+            {...register(InputNames.Name)}
           />
           <Input
             type="text"
-            name={InputNames.Email}
-            value={inputData[InputNames.Email]}
+            {...register(InputNames.Email)}
             placeholder="Your email"
-            onChange={handleInputChange}
-            invalid={!validity[InputNames.Email]}
-            validationMessage={validationMessages[InputNames.Email]}
+            invalid={false}
+            {...register(InputNames.Name)}
           />
           <Input
             type="text"
-            name={InputNames.Street}
-            value={inputData[InputNames.Street]}
+            {...register(InputNames.Street)}
             placeholder="Your street"
-            onChange={handleInputChange}
-            invalid={!validity[InputNames.Street]}
-            validationMessage={validationMessages[InputNames.Street]}
+            invalid={false}
           />
           <Input
             type="text"
-            name={InputNames.PostalCode}
-            value={inputData[InputNames.PostalCode]}
+            {...register(InputNames.PostalCode)}
             placeholder="Postalcode"
-            onChange={handleInputChange}
-            invalid={!validity[InputNames.PostalCode]}
-            validationMessage={validationMessages[InputNames.PostalCode]}
+            invalid={false}
           />
           <Dropdown
             label={InputNames.DeliveryMethod}
             name={InputNames.DeliveryMethod}
             options={[DropDownItems.Cheapest, DropDownItems.Fastest, DropDownItems.OnMyOwn]}
             value={inputData[InputNames.DeliveryMethod]}
-            onChange={handleInputChange}
           />
-          <Button theme={Theme.Success} isSubmit={true} disabled={!isFormValid}>
+          <Button theme={Theme.Success} isSubmit={true} disabled={false}>
             Order
           </Button>
         </form>
