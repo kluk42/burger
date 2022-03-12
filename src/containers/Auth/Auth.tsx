@@ -35,8 +35,9 @@ const Toolbar: Props = () => {
   const authRedirectPath = useSelector((state: RootState) => state.auth.authRedirectPath);
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid: isFormValid },
     handleSubmit,
+    trigger,
   } = useForm<InputData>({ mode: 'onTouched' });
 
   const dispatch = useBAppDispatch();
@@ -76,7 +77,7 @@ const Toolbar: Props = () => {
               validationMessage={errors.password?.message}
               {...register(InputNames.Password, validationRules.password)}
             />
-            <Button theme={Theme.Success} disabled={false} isSubmit>
+            <Button theme={Theme.Success} disabled={!isFormValid} isSubmit>
               Submit
             </Button>
           </form>
