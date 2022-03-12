@@ -37,7 +37,6 @@ const Toolbar: Props = () => {
     register,
     formState: { errors },
     handleSubmit,
-    watch,
   } = useForm<InputData>({ mode: 'onTouched' });
 
   const dispatch = useBAppDispatch();

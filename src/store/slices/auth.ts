@@ -77,7 +77,7 @@ export default slice.reducer;
 export const { startAuth, success, fail, logOut, setAuthRedirectPath } = slice.actions;
 
 export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
-  return (dispatch: BAppDispatch) => {
+  return dispatch => {
     setTimeout(() => {
       dispatch(logOut());
     }, expirationTime);
@@ -85,7 +85,7 @@ export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
 };
 
 export const auth = (email: string, password: string, isSignUp: boolean): BAppThunk => {
-  return async (dispatch: BAppDispatch) => {
+  return async dispatch => {
     try {
       const authData = {
         email,
