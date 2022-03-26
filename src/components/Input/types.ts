@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { FieldError } from 'react-hook-form';
 
 type BaseInputType = React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
@@ -6,9 +7,8 @@ type BaseInputType = React.DetailedHTMLProps<
 >;
 
 export type OwnProps = {
-  invalid?: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  validationMessage?: string;
+  errors?: { [key: string]: FieldError };
+  isTouched: boolean;
 } & BaseInputType;
 
 export type Props = FC<OwnProps>;

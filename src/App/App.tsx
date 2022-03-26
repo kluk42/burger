@@ -54,7 +54,7 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(authCheckState());
+    authCheckState(dispatch);
   }, [dispatch]);
 
   return (

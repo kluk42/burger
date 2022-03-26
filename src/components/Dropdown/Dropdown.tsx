@@ -1,11 +1,13 @@
-import { Props } from './types';
 import './Dropdown.scss';
+import { Props } from './types';
 
 const Dropdown: Props = ({ label, value, options, onChange, name }) => {
   return (
     <div className="Dropdown">
-      <label className="Dropdown__label">{label}</label>
-      <select value={value} className="Dropdown__field" onChange={onChange} name={name}>
+      <label htmlFor={name} className="Dropdown__label">
+        {label}
+      </label>
+      <select value={value} className="Dropdown__field" onChange={onChange}>
         {options.map(option => (
           <option key={option} value={option}>
             {option}

@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import axios from '../../axios-order';
 import { Order } from '../../components/ContactData/types';
 import { OrderFromServer } from '../../components/Order/types';
-import { BAppDispatch } from '../store';
+import { BAppThunk } from '../store';
 import { resetIngredients } from './burgerBuilder';
 import { FetchOrdersPayload, OrdersInitialState, PurchaseBurgerSuccessPayload } from './types';
 
@@ -58,8 +58,8 @@ export const {
   fetchingOrdersFail,
 } = slice.actions;
 
-export const purchaseBurger = (order: Order, token: string) => {
-  return async (dispatch: BAppDispatch) => {
+export const purchaseBurger = (order: Order, token: string): BAppThunk => {
+  return async dispatch => {
     dispatch(startPurchase());
     try {
       const response: AxiosResponse<{ name: string }> = await axios.post(
@@ -74,8 +74,8 @@ export const purchaseBurger = (order: Order, token: string) => {
   };
 };
 
-export const fetchOrders = (token: string, userId: string) => {
-  return async (dispatch: BAppDispatch) => {
+export const fetchOrders = (token: string, userId: string): BAppThunk => {
+  return async dispatch => {
     dispatch(initFetchingOrders());
     try {
       const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo"' + userId + '"';

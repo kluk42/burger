@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { RegisterOptions } from 'react-hook-form';
 
 export interface OwnProps {}
 
@@ -56,7 +57,7 @@ export type Order = {
 
 export type Validity = Record<InputNames, boolean>;
 
-export type ValidationRules = Record<InputNames, ValidationRuleSet>;
+export type ValidationRules = Record<InputNames, RegisterOptions>;
 
 export type ValidationMessages = Record<InputNames, string>;
 
