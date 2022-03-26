@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React from 'react';
+import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import axios from '../../axios-order';
 import { useBAppDispatch } from '../../helpers/hooks';
@@ -24,22 +24,27 @@ import {
 
 const validationRules: ValidationRules = {
   [InputNames.Name]: {
-    required: true,
+    required: 'This field is required',
   },
   [InputNames.Email]: {
-    required: true,
-    isEmail: true,
+    required: 'This field is required',
+    pattern: {
+      value:
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      message: 'Invalid email',
+    },
   },
   [InputNames.Street]: {
-    required: true,
+    required: 'This field is required',
   },
   [InputNames.PostalCode]: {
-    required: true,
-    minLength: 6,
-    maxLength: 6,
+    required: 'This field is required',
+    pattern: { value: /[0-9]/, message: 'Only numbers are allowed' },
+    minLength: { value: 6, message: 'Minimum length is 6 characters' },
+    maxLength: { value: 6, message: 'Maximum length is 6 characters' },
   },
   [InputNames.DeliveryMethod]: {
-    required: true,
+    required: 'This field is required',
   },
 };
 
@@ -50,33 +55,29 @@ const ContactData: Props = () => {
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);
   const dispatch = useBAppDispatch();
-  const { register } = useForm<InputData>();
+  const {
+    register,
+    formState: { errors, isValid: isFormValid },
+    handleSubmit,
+    control,
+  } = useForm<InputData>({ mode: 'onChange' });
+  const { touchedFields } = useFormState<InputData>({ control });
 
-  const [inputData, setInputData] = useState<InputData>({
-    [InputNames.Email]: '',
-    [InputNames.Name]: '',
-    [InputNames.Street]: '',
-    [InputNames.PostalCode]: '',
-    [InputNames.DeliveryMethod]: DropDownItems.Fastest,
-  });
-
-  const orderHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const orderHandler = (data: InputData) => {
     const order: Order = {
       ingredients: { ...ingredients },
       price: totalPrice,
       customer: {
-        name: inputData[InputNames.Name],
+        name: data[InputNames.Name],
         address: {
-          street: inputData[InputNames.Street],
-          zipCode: +inputData[InputNames.PostalCode],
+          street: data[InputNames.Street],
+          zipCode: +data[InputNames.PostalCode],
           country: 'Russia',
         },
-        email: inputData[InputNames.Email],
+        email: data[InputNames.Email],
         id: userId,
       },
-      deliveryMethod: inputData[InputNames.DeliveryMethod],
+      deliveryMethod: data[InputNames.DeliveryMethod],
     };
     dispatch(purchaseBurger(order, token));
   };
@@ -87,39 +88,53 @@ const ContactData: Props = () => {
       {isPurchasing ? (
         <Spinner />
       ) : (
-        <form onSubmit={orderHandler}>
+        <form onSubmit={handleSubmit(orderHandler)}>
           <Input
             type="text"
             placeholder="Your name"
-            invalid={false}
-            {...register(InputNames.Name)}
+            isTouched={InputNames.Name in touchedFields}
+            errors={errors}
+            {...register(InputNames.Name, validationRules.name)}
           />
           <Input
             type="text"
-            {...register(InputNames.Email)}
             placeholder="Your email"
-            invalid={false}
-            {...register(InputNames.Name)}
+            isTouched={InputNames.Email in touchedFields}
+            errors={errors}
+            {...register(InputNames.Email, validationRules.email)}
           />
           <Input
             type="text"
-            {...register(InputNames.Street)}
+            {...register(InputNames.Street, validationRules.street)}
             placeholder="Your street"
-            invalid={false}
+            isTouched={InputNames.Street in touchedFields}
+            autoComplete="off"
+            errors={errors}
           />
           <Input
             type="text"
-            {...register(InputNames.PostalCode)}
+            {...register(InputNames.PostalCode, validationRules['postal-code'])}
             placeholder="Postalcode"
-            invalid={false}
+            isTouched={InputNames.PostalCode in touchedFields}
+            autoComplete="off"
+            errors={errors}
           />
-          <Dropdown
-            label={InputNames.DeliveryMethod}
+          <Controller
+            control={control}
             name={InputNames.DeliveryMethod}
-            options={[DropDownItems.Cheapest, DropDownItems.Fastest, DropDownItems.OnMyOwn]}
-            value={inputData[InputNames.DeliveryMethod]}
+            rules={validationRules['delivery-method']}
+            defaultValue={DropDownItems.Cheapest}
+            render={({ field: { onChange, value, name } }) => (
+              <Dropdown
+                label={name}
+                name={name}
+                options={[DropDownItems.Cheapest, DropDownItems.Fastest, DropDownItems.OnMyOwn]}
+                value={value}
+                onChange={onChange}
+              />
+            )}
           />
-          <Button theme={Theme.Success} isSubmit={true} disabled={false}>
+          <Button theme={Theme.Success} isSubmit disabled={!isFormValid}>
             Order
           </Button>
         </form>

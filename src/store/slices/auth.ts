@@ -65,6 +65,8 @@ export const slice = createSlice({
     logOut: state => {
       state.token = '';
       state.userId = '';
+      localStorage.removeItem(LocalStorageKeys.Token);
+      localStorage.removeItem(LocalStorageKeys.UserId);
     },
     setAuthRedirectPath: (state, action: PayloadAction<AuthSetRedirectPathPayload>) => {
       state.authRedirectPath = action.payload.path;
@@ -118,24 +120,22 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
   };
 };
 
-export const authCheckState = () => {
-  return (dispatch: BAppDispatch) => {
-    const token = localStorage.getItem(LocalStorageKeys.Token);
-    const expirationTime = localStorage.getItem(LocalStorageKeys.ExpirationDate);
-    const userId = localStorage.getItem(LocalStorageKeys.UserId);
-    if (!token) {
-      dispatch(logOut());
+export const authCheckState = (dispatch: BAppDispatch) => {
+  const token = localStorage.getItem(LocalStorageKeys.Token);
+  const expirationTime = localStorage.getItem(LocalStorageKeys.ExpirationDate);
+  const userId = localStorage.getItem(LocalStorageKeys.UserId);
+  if (!token) {
+    dispatch(logOut());
+    return;
+  }
+  if (expirationTime && userId) {
+    const isExpired = new Date(+expirationTime).getTime() < new Date().getTime();
+    if (!isExpired) {
+      dispatch(success({ token, userId }));
+      dispatch(checkAuthTimeout(new Date(+expirationTime).getTime() - new Date().getTime()));
       return;
     }
-    if (expirationTime && userId) {
-      const isExpired = new Date(+expirationTime).getTime() < new Date().getTime();
-      if (!isExpired) {
-        dispatch(success({ token, userId }));
-        dispatch(checkAuthTimeout(new Date(+expirationTime).getTime() - new Date().getTime()));
-        return;
-      }
-      dispatch(logOut());
-      return;
-    }
-  };
+    dispatch(logOut());
+    return;
+  }
 };

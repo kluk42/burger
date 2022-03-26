@@ -35,10 +35,9 @@ const Toolbar: Props = () => {
   const authRedirectPath = useSelector((state: RootState) => state.auth.authRedirectPath);
   const {
     register,
-    formState: { errors, isValid: isFormValid },
+    formState: { errors, isValid: isFormValid, touchedFields },
     handleSubmit,
-    trigger,
-  } = useForm<InputData>({ mode: 'onTouched' });
+  } = useForm<InputData>({ mode: 'onChange' });
 
   const dispatch = useBAppDispatch();
 
@@ -68,13 +67,15 @@ const Toolbar: Props = () => {
             <Input
               type="email"
               placeholder="Email"
-              validationMessage={errors[InputNames.Email]?.message}
+              errors={errors}
+              isTouched={InputNames.Email in touchedFields}
               {...register(InputNames.Email, validationRules.email)}
             />
             <Input
               type="password"
               placeholder="Password"
-              validationMessage={errors.password?.message}
+              errors={errors}
+              isTouched={InputNames.Password in touchedFields}
               {...register(InputNames.Password, validationRules.password)}
             />
             <Button theme={Theme.Success} disabled={!isFormValid} isSubmit>
