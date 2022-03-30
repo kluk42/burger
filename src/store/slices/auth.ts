@@ -50,6 +50,7 @@ export const slice = createSlice({
     success: (state, action: PayloadAction<AuthSuccessPayload>) => {
       state.token = action.payload.token;
       state.userId = action.payload.userId;
+      state.loading = false;
     },
     fail: (state, action: PayloadAction<AuthFailPayload>) => {
       let errMessage: string | null = null;
