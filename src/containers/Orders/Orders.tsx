@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import axios from '../../axios-order';
 import Order from '../../components/Order';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import { fetchOrders } from '../../store/slices/order';
-import { RootState } from '../../store/slices/types';
+import axios from '../../infrastructure/network/axios';
+import { fetchOrders } from '../../infrastructure/store/slices/order';
+import { RootState } from '../../infrastructure/store/slices/types';
 import './Orders.scss';
 import { Props } from './types';
 

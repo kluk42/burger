@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { firebaseErrMessageHandler } from '../../helpers/FirebaseErrMessageHandler';
-import { isFirebaseErrorData } from '../../TypeGuards/isFirebaseErrorData';
+import { firebaseErrMessageHandler } from '../../../helpers/FirebaseErrMessageHandler';
+import { isFirebaseErrorData } from '../../../TypeGuards/isFirebaseErrorData';
 import { BAppDispatch, BAppThunk } from '../store';
 import {
   AuthFailPayload,
   AuthRootState,
   AuthSetRedirectPathPayload,
   AuthSuccessPayload,
+  RefreshTokenPayload,
 } from './types';
 
 export type AuthResponseData = {
@@ -37,6 +38,7 @@ const initialState: AuthRootState = {
   error: '',
   loading: false,
   authRedirectPath: '/',
+  refreshToken: '',
 };
 
 export const slice = createSlice({
@@ -72,12 +74,17 @@ export const slice = createSlice({
     setAuthRedirectPath: (state, action: PayloadAction<AuthSetRedirectPathPayload>) => {
       state.authRedirectPath = action.payload.path;
     },
+    refreshTokens: (state, action: PayloadAction<RefreshTokenPayload>) => {
+      state.refreshToken = action.payload.refreshToken;
+      state.token = action.payload.accessToken;
+    },
   },
 });
 
 export default slice.reducer;
 
-export const { startAuth, success, fail, logOut, setAuthRedirectPath } = slice.actions;
+export const { startAuth, success, fail, logOut, setAuthRedirectPath, refreshTokens } =
+  slice.actions;
 
 export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
   return dispatch => {

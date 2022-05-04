@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { logOut } from '../../store/slices/auth';
+import { logOut } from '../../infrastructure/store/slices/auth';
 import './Logout.scss';
 import { Props } from './types';
 

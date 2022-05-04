@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { initFetchingOrders } from '../../store/slices/order';
-import { RootState } from '../../store/slices/types';
+import { initFetchingOrders } from '../../infrastructure/store/slices/order';
+import { RootState } from '../../infrastructure/store/slices/types';
 import NavigationItem from '../NavigationItem/index';
 import './NavigationItems.scss';
 import { Props } from './types';

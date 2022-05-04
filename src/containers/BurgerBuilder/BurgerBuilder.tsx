@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import axios from '../../axios-order';
 import BuildControls from '../../components/BuildControls/index';
 import Burger from '../../components/Burger/index';
 import Modal from '../../components/Modal/index';
@@ -9,10 +8,11 @@ import OrderSummary from '../../components/OrderSummary';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import { setAuthRedirectPath } from '../../store/slices/auth';
-import { initIngredients } from '../../store/slices/burgerBuilder';
-import { startOrder } from '../../store/slices/order';
-import { RootState } from '../../store/slices/types';
+import axios from '../../infrastructure/network/axios';
+import { setAuthRedirectPath } from '../../infrastructure/store/slices/auth';
+import { initIngredients } from '../../infrastructure/store/slices/burgerBuilder';
+import { startOrder } from '../../infrastructure/store/slices/order';
+import { RootState } from '../../infrastructure/store/slices/types';
 import { OwnProps, Props } from './types';
 
 const BurgerBuilder: Props = () => {

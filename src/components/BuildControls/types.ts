@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { PurchasableIngredients } from "../../store/slices/burgerBuilder";
+import { PurchasableIngredients } from '../../infrastructure/store/slices/burgerBuilder';
 
 export interface OwnProps {
   handleOrderBtnClick: () => void;
