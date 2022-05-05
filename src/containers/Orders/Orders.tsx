@@ -4,7 +4,7 @@ import Order from '../../components/Order';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import axios from '../../infrastructure/network/axios';
+import axios from '../../infrastructure/network/axios-orders';
 import { fetchOrders } from '../../infrastructure/store/slices/order';
 import { RootState } from '../../infrastructure/store/slices/types';
 import './Orders.scss';

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AxiosResponse } from 'axios';
 import { Order } from '../../../components/ContactData/types';
 import { OrderFromServer } from '../../../components/Order/types';
-import axios from '../../../infrastructure/network/axios';
+import axios from '../../network/axios-orders';
 import { BAppThunk } from '../store';
 import { resetIngredients } from './burgerBuilder';
 import { FetchOrdersPayload, OrdersInitialState, PurchaseBurgerSuccessPayload } from './types';

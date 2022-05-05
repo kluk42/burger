@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App/App';
 import './index.scss';
+import setupInterceptors from './infrastructure/network/axios-interceptors';
 import { store } from './infrastructure/store/store';
 
 ReactDOM.render(
@@ -16,3 +17,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+setupInterceptors(store);

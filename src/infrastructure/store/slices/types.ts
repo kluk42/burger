@@ -73,6 +73,7 @@ export type FetchOrdersFailPayload = {
 export type AuthSuccessPayload = {
   token: string;
   userId: string;
+  refreshToken: string;
 };
 
 export type AuthFailPayload = {

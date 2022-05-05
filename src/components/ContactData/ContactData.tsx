@@ -3,7 +3,7 @@ import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useBAppDispatch } from '../../helpers/hooks';
 import WithErrorHandler from '../../hoc/withErrorHandler';
-import axios from '../../infrastructure/network/axios';
+import axios from '../../infrastructure/network/axios-orders';
 import { purchaseBurger } from '../../infrastructure/store/slices/order';
 import { RootState } from '../../infrastructure/store/slices/types';
 import Button from '../Button';

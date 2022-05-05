@@ -8,7 +8,7 @@ import OrderSummary from '../../components/OrderSummary';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
-import axios from '../../infrastructure/network/axios';
+import axios from '../../infrastructure/network/axios-orders';
 import { setAuthRedirectPath } from '../../infrastructure/store/slices/auth';
 import { initIngredients } from '../../infrastructure/store/slices/burgerBuilder';
 import { startOrder } from '../../infrastructure/store/slices/order';
