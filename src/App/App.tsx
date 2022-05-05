@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     authCheckState(dispatch);
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="App">

@@ -3,13 +3,16 @@ import axios, { AxiosResponse } from 'axios';
 import { firebaseErrMessageHandler } from '../../../helpers/FirebaseErrMessageHandler';
 import { isFirebaseErrorData } from '../../../TypeGuards/isFirebaseErrorData';
 import {
+  getAccessToken,
+  getRefreshToken,
+  getUserId,
   LocalStorageKeys,
   saveAccessToken,
   saveRefreshToken,
   saveUserId,
 } from '../../localStorage';
 import authService from '../../network/axios-auth';
-import { BAppThunk } from '../store';
+import { BAppDispatch, BAppThunk } from '../store';
 import {
   AuthFailPayload,
   AuthRootState,
@@ -103,12 +106,6 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
       const response = await authService.post<any, AxiosResponse<AuthResponseData>>(url, authData);
 
       saveAccessToken(response.data.idToken);
-
-      const currentDate = new Date();
-      const expirationDate = new Date(
-        currentDate.getTime() + parseInt(response.data.expiresIn) * 1000
-      );
-
       saveUserId(response.data.localId);
       saveRefreshToken(response.data.refreshToken);
 
@@ -127,4 +124,16 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
       }
     }
   };
+};
+
+export const authCheckState = (dispatch: BAppDispatch) => {
+  const token = getAccessToken();
+  const userId = getUserId();
+  const refreshToken = getRefreshToken();
+  if (!token || !userId || !refreshToken) {
+    dispatch(logOut());
+    return;
+  }
+
+  dispatch(success({ token, userId, refreshToken }));
 };
