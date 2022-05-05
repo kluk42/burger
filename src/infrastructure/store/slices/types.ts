@@ -1,7 +1,7 @@
-import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
-import { Order } from '../../components/ContactData/types';
-import { OrderFromServer } from '../../components/Order/types';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { Ingredients } from '../../../components/Burger/BurgerIngredient/types';
+import { Order } from '../../../components/ContactData/types';
+import { OrderFromServer } from '../../../components/Order/types';
+import { IngredientsToBuildOf } from '../../../containers/BurgerBuilder/types';
 import { PurchasableIngredients } from './burgerBuilder';
 
 export type BurgerBuilderInitialState = {
@@ -50,6 +50,7 @@ export type AuthRootState = {
   error: string;
   loading: boolean;
   authRedirectPath: string;
+  refreshToken: string;
 };
 
 export type PurchaseBurgerSuccessPayload = {
@@ -72,6 +73,7 @@ export type FetchOrdersFailPayload = {
 export type AuthSuccessPayload = {
   token: string;
   userId: string;
+  refreshToken: string;
 };
 
 export type AuthFailPayload = {
@@ -80,6 +82,11 @@ export type AuthFailPayload = {
 
 export type AuthSetRedirectPathPayload = {
   path: string;
+};
+
+export type RefreshTokenPayload = {
+  refreshToken: string;
+  accessToken: string;
 };
 
 export type RootState = {

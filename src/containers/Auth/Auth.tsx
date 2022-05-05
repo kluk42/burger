@@ -7,8 +7,8 @@ import { Theme } from '../../components/Button/types';
 import Input from '../../components/Input';
 import Spinner from '../../components/Spinner';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { auth, setAuthRedirectPath, startAuth } from '../../store/slices/auth';
-import { RootState } from '../../store/slices/types';
+import { auth, setAuthRedirectPath, startAuth } from '../../infrastructure/store/slices/auth';
+import { RootState } from '../../infrastructure/store/slices/types';
 import './Auth.scss';
 import { InputData, InputNames, Props, ValidationRules } from './types';
 

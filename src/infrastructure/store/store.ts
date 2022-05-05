@@ -14,6 +14,8 @@ export const store = configureStore({
   reducer: rootReducer,
 });
 
+export type BAppStore = typeof store;
+
 export type BAppRootState = ReturnType<typeof store.getState>;
 
 export type BAppDispatch = typeof store.dispatch;

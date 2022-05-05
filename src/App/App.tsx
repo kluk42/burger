@@ -8,8 +8,8 @@ import Logout from '../containers/Logout';
 import Orders from '../containers/Orders';
 import { useBAppDispatch } from '../helpers/hooks';
 import Layout from '../hoc/Layout/index';
-import { authCheckState } from '../store/slices/auth';
-import { RootState } from '../store/slices/types';
+import { authCheckState } from '../infrastructure/store/slices/auth';
+import { RootState } from '../infrastructure/store/slices/types';
 import './App.scss';
 
 function App() {
@@ -55,7 +55,7 @@ function App() {
 
   useEffect(() => {
     authCheckState(dispatch);
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="App">

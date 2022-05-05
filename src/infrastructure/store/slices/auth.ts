@@ -1,13 +1,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosResponse } from 'axios';
-import { firebaseErrMessageHandler } from '../../helpers/FirebaseErrMessageHandler';
-import { isFirebaseErrorData } from '../../TypeGuards/isFirebaseErrorData';
+import { firebaseErrMessageHandler } from '../../../helpers/FirebaseErrMessageHandler';
+import { isFirebaseErrorData } from '../../../TypeGuards/isFirebaseErrorData';
+import {
+  getAccessToken,
+  getRefreshToken,
+  getUserId,
+  LocalStorageKeys,
+  saveAccessToken,
+  saveRefreshToken,
+  saveUserId,
+} from '../../localStorage';
+import authService from '../../network/axios-auth';
 import { BAppDispatch, BAppThunk } from '../store';
 import {
   AuthFailPayload,
   AuthRootState,
   AuthSetRedirectPathPayload,
   AuthSuccessPayload,
+  RefreshTokenPayload,
 } from './types';
 
 export type AuthResponseData = {
@@ -25,18 +36,13 @@ export type AuthResponse = {
   statusText: string;
 };
 
-enum LocalStorageKeys {
-  Token = 'token',
-  ExpirationDate = 'ExpirationDate',
-  UserId = 'userId',
-}
-
 const initialState: AuthRootState = {
   userId: '',
   token: '',
   error: '',
   loading: false,
   authRedirectPath: '/',
+  refreshToken: '',
 };
 
 export const slice = createSlice({
@@ -50,6 +56,7 @@ export const slice = createSlice({
     success: (state, action: PayloadAction<AuthSuccessPayload>) => {
       state.token = action.payload.token;
       state.userId = action.payload.userId;
+      state.refreshToken = action.payload.refreshToken;
       state.loading = false;
     },
     fail: (state, action: PayloadAction<AuthFailPayload>) => {
@@ -72,20 +79,17 @@ export const slice = createSlice({
     setAuthRedirectPath: (state, action: PayloadAction<AuthSetRedirectPathPayload>) => {
       state.authRedirectPath = action.payload.path;
     },
+    refreshTokens: (state, action: PayloadAction<RefreshTokenPayload>) => {
+      state.refreshToken = action.payload.refreshToken;
+      state.token = action.payload.accessToken;
+    },
   },
 });
 
 export default slice.reducer;
 
-export const { startAuth, success, fail, logOut, setAuthRedirectPath } = slice.actions;
-
-export const checkAuthTimeout = (expirationTime: number): BAppThunk => {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(logOut());
-    }, expirationTime);
-  };
-};
+export const { startAuth, success, fail, logOut, setAuthRedirectPath, refreshTokens } =
+  slice.actions;
 
 export const auth = (email: string, password: string, isSignUp: boolean): BAppThunk => {
   return async dispatch => {
@@ -95,22 +99,23 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
         password,
         returnSecureToken: true,
       };
-      let url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+      let url = 'accounts:signUp?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
       if (!isSignUp) {
-        url =
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+        url = 'accounts:signInWithPassword?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
       }
-      const response = await axios.post<any, AxiosResponse<AuthResponseData>>(url, authData);
-      localStorage.setItem(LocalStorageKeys.Token, response.data.idToken);
-      const currentDate = new Date();
-      const expirationDate = new Date(
-        currentDate.getTime() + parseInt(response.data.expiresIn) * 1000
-      ).getTime();
-      localStorage.setItem(LocalStorageKeys.ExpirationDate, JSON.stringify(expirationDate));
-      localStorage.setItem(LocalStorageKeys.UserId, response.data.localId);
-      dispatch(success({ token: response.data.idToken, userId: response.data.localId }));
-      dispatch(checkAuthTimeout(+response.data.expiresIn * 1000));
+      const response = await authService.post<any, AxiosResponse<AuthResponseData>>(url, authData);
+
+      saveAccessToken(response.data.idToken);
+      saveUserId(response.data.localId);
+      saveRefreshToken(response.data.refreshToken);
+
+      dispatch(
+        success({
+          token: response.data.idToken,
+          userId: response.data.localId,
+          refreshToken: response.data.refreshToken,
+        })
+      );
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && isFirebaseErrorData(err.response.data)) {
         dispatch(fail({ errMessage: firebaseErrMessageHandler(err.response.data.error.message) }));
@@ -122,21 +127,13 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
 };
 
 export const authCheckState = (dispatch: BAppDispatch) => {
-  const token = localStorage.getItem(LocalStorageKeys.Token);
-  const expirationTime = localStorage.getItem(LocalStorageKeys.ExpirationDate);
-  const userId = localStorage.getItem(LocalStorageKeys.UserId);
-  if (!token) {
+  const token = getAccessToken();
+  const userId = getUserId();
+  const refreshToken = getRefreshToken();
+  if (!token || !userId || !refreshToken) {
     dispatch(logOut());
     return;
   }
-  if (expirationTime && userId) {
-    const isExpired = new Date(+expirationTime).getTime() < new Date().getTime();
-    if (!isExpired) {
-      dispatch(success({ token, userId }));
-      dispatch(checkAuthTimeout(new Date(+expirationTime).getTime() - new Date().getTime()));
-      return;
-    }
-    dispatch(logOut());
-    return;
-  }
+
+  dispatch(success({ token, userId, refreshToken }));
 };

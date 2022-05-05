@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { RootState } from '../../store/slices/types';
+import { RootState } from '../../infrastructure/store/slices/types';
 import BuildControl from '../BuildControl/index';
 import { Ingredients } from '../Burger/BurgerIngredient/types';
 import './BuildControls.scss';
@@ -18,10 +18,10 @@ const BuildControls: Props = ({ handleOrderBtnClick }) => {
   const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
   const price = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
   const isAuthenticated = !!useSelector((state: RootState) => state.auth.token);
-  const [purchesable, setPurchesable] = useState(false);
+  const [purchasable, setPurchasable] = useState(false);
 
   useEffect(() => {
-    setPurchesable(
+    setPurchasable(
       Object.keys(ingredientsFromStore).some(
         ing =>
           ingredientsFromStore[ing as keyof IngredientsToBuildOf] > 0 &&
@@ -41,7 +41,7 @@ const BuildControls: Props = ({ handleOrderBtnClick }) => {
       ))}
       <button
         className="BuildControls__orderBtn"
-        disabled={!purchesable}
+        disabled={!purchasable}
         onClick={handleOrderBtnClick}
       >
         {isAuthenticated ? 'Order Now' : 'Sign up to order'}
