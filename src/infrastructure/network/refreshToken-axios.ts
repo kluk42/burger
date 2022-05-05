@@ -10,5 +10,6 @@ export type RefreshTokenResponse = {
 };
 
 export default axios.create({
-  url: 'https://securetoken.googleapis.com/v1/token?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw',
+  baseURL:
+    'https://securetoken.googleapis.com/v1/token?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw',
 });

@@ -99,9 +99,9 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
         password,
         returnSecureToken: true,
       };
-      let url = 'signUp?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+      let url = 'accounts:signUp?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
       if (!isSignUp) {
-        url = 'signInWithPassword?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+        url = 'accounts:signInWithPassword?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
       }
       const response = await authService.post<any, AxiosResponse<AuthResponseData>>(url, authData);
 

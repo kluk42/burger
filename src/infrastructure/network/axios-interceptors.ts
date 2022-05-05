@@ -23,13 +23,14 @@ export const refreshTokenFunc = async (refreshToken: string, dispatch: BAppDispa
 
 let isRetry = false;
 
-const setup = (store: BAppStore) => {
+const setupInterceptors = (store: BAppStore) => {
   ordersService.interceptors.response.use(
     res => {
       isRetry = false;
       return res;
     },
     async (err: AxiosError) => {
+      console.log('right interceptor!!!!');
       const refreshToken = store.getState().auth.refreshToken;
 
       if (err.response?.status === 401 && refreshToken && !isRetry) {
@@ -43,6 +44,7 @@ const setup = (store: BAppStore) => {
       return Promise.reject(err);
     }
   );
+  console.log(ordersService.interceptors);
 };
 
-export default setup;
+export default setupInterceptors;

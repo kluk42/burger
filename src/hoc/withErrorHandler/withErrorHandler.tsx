@@ -1,6 +1,5 @@
-import { AxiosInstance, AxiosError } from 'axios';
+import { AxiosError, AxiosInstance } from 'axios';
 import { FC, useEffect, useState } from 'react';
-
 import Modal from '../../components/Modal';
 
 const withErrorHandler =
@@ -16,7 +15,9 @@ const withErrorHandler =
     const resInterceptor = axios.interceptors.response.use(
       res => res,
       (err: AxiosError) => {
-        setError(err);
+        if (err.response?.status !== 401) {
+          setError(err);
+        }
         return Promise.reject(err);
       }
     );

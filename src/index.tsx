@@ -7,6 +7,8 @@ import './index.scss';
 import setupInterceptors from './infrastructure/network/axios-interceptors';
 import { store } from './infrastructure/store/store';
 
+setupInterceptors(store);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
@@ -17,5 +19,3 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-setupInterceptors(store);
