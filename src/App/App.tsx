@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Auth from '../containers/Auth';
 import BurgerBuilder from '../containers/BurgerBuilder';
 import Checkout from '../containers/Checkout';
@@ -19,36 +19,36 @@ function App() {
   const routes = () => {
     if (!isAuthenticated) {
       return (
-        <Switch>
-          <Route exact path="/">
+        <Routes>
+          <Route path="/">
             <BurgerBuilder />
           </Route>
-          <Route exact path="/auth">
+          <Route path="/auth">
             <Auth />
           </Route>
-          <Redirect to="/" />
-        </Switch>
+          <Navigate to="/" replace />
+        </Routes>
       );
     } else {
       return (
-        <Switch>
-          <Route exact path="/auth">
+        <Routes>
+          <Route path="/auth">
             <Auth />
           </Route>
-          <Route exact path="/logout">
+          <Route path="/logout">
             <Logout />
           </Route>
-          <Route path="/checkout">
+          <Route path="/checkout/*">
             <Checkout />
           </Route>
           <Route path="/orders">
             <Orders />
           </Route>
-          <Route exact path="/">
+          <Route path="/">
             <BurgerBuilder />
           </Route>
-          <Redirect to="/" />
-        </Switch>
+          <Navigate to="/" replace />
+        </Routes>
       );
     }
   };

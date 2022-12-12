@@ -1,10 +1,16 @@
-import { AxiosInstance, AxiosError } from 'axios';
-import { FC, useEffect, useState } from 'react';
-
+import { AxiosError, AxiosInstance } from 'axios';
+import { FC, ReactElement, useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 
+type WrappedComponent<T> = FC<T> & {
+  children?: ReactElement;
+};
+
 const withErrorHandler =
-  <T,>(WrappedComponent: FC<T>, axios: AxiosInstance) =>
+  <T extends JSX.IntrinsicAttributes>(
+    WrappedComponent: WrappedComponent<T>,
+    axios: AxiosInstance
+  ) =>
   (props: T) => {
     const [error, setError] = useState<AxiosError | null>(null);
 

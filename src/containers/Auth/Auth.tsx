@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router';
+import { Navigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import { Theme } from '../../components/Button/types';
 import Input from '../../components/Input';
@@ -91,7 +91,7 @@ const Toolbar: Props = () => {
       </Button>
     </div>
   ) : (
-    <Redirect to={authRedirectPath} />
+    <Navigate to={authRedirectPath} />
   );
 };
 
