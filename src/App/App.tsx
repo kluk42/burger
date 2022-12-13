@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import ContactData from '../components/ContactData';
 import Auth from '../containers/Auth';
 import BurgerBuilder from '../containers/BurgerBuilder';
 import Checkout from '../containers/Checkout';
@@ -30,7 +31,9 @@ function App() {
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/logout" element={<Logout />} />
-          <Route path="/checkout/*" element={<Checkout />} />
+          <Route path="/checkout/" element={<Checkout />}>
+            <Route path={'contact-data'} element={<ContactData />} />
+          </Route>
           <Route path="/orders" element={<Orders />} />
           <Route path="/" element={<BurgerBuilder />} />
           <Route path="*" element={<Navigate to="/" replace />} />
