@@ -22,10 +22,10 @@ module.exports = {
   mode: mode,
   plugins: [new MiniCssExtractPlugin()],
 
-  entry: './src/index.js',
+  entry: './src/index.tsx',
 
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     assetModuleFilename: 'images/[hash][ext][query]',
   },
 
@@ -36,11 +36,18 @@ module.exports = {
         type: 'asset',
       },
       {
-        test: /\.jsx?$/,
+        test: /\.(jsx?)$/,
         exclude: /node_modules/,
         use: {
           // without additional settings, this will reference .babelrc
           loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.(tsx?)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader',
         },
       },
       {
@@ -53,7 +60,7 @@ module.exports = {
   plugins: plugins,
 
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
 
   devtool: 'source-map',

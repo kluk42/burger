@@ -20,34 +20,20 @@ function App() {
     if (!isAuthenticated) {
       return (
         <Routes>
-          <Route path="/">
-            <BurgerBuilder />
-          </Route>
-          <Route path="/auth">
-            <Auth />
-          </Route>
-          <Navigate to="/" replace />
+          <Route path="/" element={<BurgerBuilder />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       );
     } else {
       return (
         <Routes>
-          <Route path="/auth">
-            <Auth />
-          </Route>
-          <Route path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/checkout/*">
-            <Checkout />
-          </Route>
-          <Route path="/orders">
-            <Orders />
-          </Route>
-          <Route path="/">
-            <BurgerBuilder />
-          </Route>
-          <Navigate to="/" replace />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/checkout/*" element={<Checkout />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/" element={<BurgerBuilder />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       );
     }
