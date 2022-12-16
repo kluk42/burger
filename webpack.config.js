@@ -11,12 +11,15 @@ const path = require('path');
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
 const plugins = [
-  new CleanWebpackPlugin(),
   new MiniCssExtractPlugin(),
   new HtmlWebpackPlugin({
     template: './src/index.html',
   }),
 ];
+
+if (process.env.NODE_ENV === 'production') {
+  plugins.push(new CleanWebpackPlugin());
+}
 
 if (process.env.SERVE) {
   plugins.push(new ReactRefreshWebpackPlugin());
