@@ -22,7 +22,9 @@ const withErrorHandler =
     const resInterceptor = axios.interceptors.response.use(
       res => res,
       (err: AxiosError) => {
-        setError(err);
+        if (err.response?.status !== 401) {
+          setError(err);
+        }
         return Promise.reject(err);
       }
     );

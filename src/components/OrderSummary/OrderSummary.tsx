@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { RootState } from '../../store/slices/types';
+import { RootState } from '../../infrastructure/store/slices/types';
 import Button from '../Button/index';
 import { Theme } from '../Button/types';
 import './OrderSummary.scss';

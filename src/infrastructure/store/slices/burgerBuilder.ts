@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { Ingredients } from '../../../components/Burger/BurgerIngredient/types';
+import { IngredientsToBuildOf } from '../../../containers/BurgerBuilder/types';
 import { BAppThunk } from '../store';
 import {
   BurgerBuilderInitialState,

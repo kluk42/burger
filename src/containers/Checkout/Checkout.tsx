@@ -3,7 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { Ingredients } from '../../components/Burger/BurgerIngredient/types';
 import CheckoutSummary from '../../components/CheckoutSummary';
 import ContactData from '../../components/ContactData';
-import { RootState } from '../../store/slices/types';
+import { RootState } from '../../infrastructure/store/slices/types';
 import './Checkout.scss';
 import { Props } from './types';
 

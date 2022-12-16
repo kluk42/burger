@@ -1,10 +1,10 @@
 import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import axios from '../../axios-order';
 import { useBAppDispatch } from '../../helpers/hooks';
 import WithErrorHandler from '../../hoc/withErrorHandler';
-import { purchaseBurger } from '../../store/slices/order';
-import { RootState } from '../../store/slices/types';
+import axios from '../../infrastructure/network/axios-orders';
+import { purchaseBurger } from '../../infrastructure/store/slices/order';
+import { RootState } from '../../infrastructure/store/slices/types';
 import Button from '../Button';
 import { Theme } from '../Button/types';
 import Dropdown from '../Dropdown';

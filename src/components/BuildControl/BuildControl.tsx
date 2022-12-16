@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useBAppDispatch } from '../../helpers/hooks';
-import { addIngredient, removeIngredient } from '../../store/slices/burgerBuilder';
-import { RootState } from '../../store/slices/types';
+import { addIngredient, removeIngredient } from '../../infrastructure/store/slices/burgerBuilder';
+import { RootState } from '../../infrastructure/store/slices/types';
 import './BuildControl.scss';
 import { Props } from './types';
 
