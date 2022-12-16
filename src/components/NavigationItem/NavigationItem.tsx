@@ -1,6 +1,7 @@
+import clsx from 'clsx';
 import { NavLink } from 'react-router-dom';
-
 import { Props } from './types';
+
 import './NavigationItem.scss';
 
 const NavigationItem: Props = ({ children, link, exact, handleLinkClick }) => {
@@ -8,9 +9,9 @@ const NavigationItem: Props = ({ children, link, exact, handleLinkClick }) => {
     <li className="NavigationItem">
       <NavLink
         to={link}
-        className="NavigationItem__link"
-        activeClassName="NavigationItem__link_active"
-        exact={exact}
+        className={({ isActive }) =>
+          clsx({ NavigationItem__link: true, NavigationItem__link_active: isActive })
+        }
         onClick={handleLinkClick}
       >
         {children}

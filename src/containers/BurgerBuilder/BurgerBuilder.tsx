@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BuildControls from '../../components/BuildControls/index';
 import Burger from '../../components/Burger/index';
 import Modal from '../../components/Modal/index';
@@ -24,7 +24,7 @@ const BurgerBuilder: Props = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isFetching) {
@@ -37,7 +37,7 @@ const BurgerBuilder: Props = () => {
   };
 
   const purchaseClick = async () => {
-    history.push('/checkout');
+    navigate('/checkout', {});
   };
 
   const handleOrderBtnClick = () => {
@@ -46,7 +46,7 @@ const BurgerBuilder: Props = () => {
       dispatch(startOrder());
     } else {
       dispatch(setAuthRedirectPath({ path: '/checkout' }));
-      history.push('/auth');
+      navigate('/auth');
     }
   };
 

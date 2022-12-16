@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import Auth from '../containers/Auth';
-import BurgerBuilder from '../containers/BurgerBuilder';
-import Checkout from '../containers/Checkout';
-import Logout from '../containers/Logout';
-import Orders from '../containers/Orders';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Spinner from '../components/Spinner';
 import { useBAppDispatch } from '../helpers/hooks';
 import Layout from '../hoc/Layout/index';
 import { authCheckState } from '../infrastructure/store/slices/auth';
 import { RootState } from '../infrastructure/store/slices/types';
 import './App.scss';
+
+const Checkout = lazy(() => import('../containers/Checkout'));
+const Orders = lazy(() => import('../containers/Orders'));
+const Auth = lazy(() => import('../containers/Auth'));
+const Logout = lazy(() => import('../containers/Logout'));
+const BurgerBuilder = lazy(() => import('../containers/BurgerBuilder'));
 
 function App() {
   const dispatch = useBAppDispatch();
@@ -19,36 +21,24 @@ function App() {
   const routes = () => {
     if (!isAuthenticated) {
       return (
-        <Switch>
-          <Route exact path="/">
-            <BurgerBuilder />
-          </Route>
-          <Route exact path="/auth">
-            <Auth />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
+        <Routes>
+          <Route path="/" element={<BurgerBuilder />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       );
     } else {
       return (
-        <Switch>
-          <Route exact path="/auth">
-            <Auth />
+        <Routes>
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/checkout/" element={<Checkout />}>
+            <Route path={'contact-data'} />
           </Route>
-          <Route exact path="/logout">
-            <Logout />
-          </Route>
-          <Route path="/checkout">
-            <Checkout />
-          </Route>
-          <Route path="/orders">
-            <Orders />
-          </Route>
-          <Route exact path="/">
-            <BurgerBuilder />
-          </Route>
-          <Redirect to="/" />
-        </Switch>
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/" element={<BurgerBuilder />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       );
     }
   };
@@ -59,7 +49,9 @@ function App() {
 
   return (
     <div className="App">
-      <Layout>{routes()}</Layout>
+      <Layout>
+        <Suspense fallback={<Spinner />}>{routes()}</Suspense>
+      </Layout>
     </div>
   );
 }
