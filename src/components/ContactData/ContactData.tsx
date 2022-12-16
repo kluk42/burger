@@ -83,7 +83,7 @@ const ContactData: Props = () => {
 
   return (
     <div className="ContactData">
-      <h3>Entry your contact data</h3>
+      <h3>{isPurchasing ? 'Processing' : 'Enter your contact data'}</h3>
       {isPurchasing ? (
         <Spinner />
       ) : (

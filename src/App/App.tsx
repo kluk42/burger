@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import ContactData from '../components/ContactData';
-import Auth from '../containers/Auth';
-import BurgerBuilder from '../containers/BurgerBuilder';
-import Checkout from '../containers/Checkout';
-import Logout from '../containers/Logout';
-import Orders from '../containers/Orders';
+import Spinner from '../components/Spinner';
 import { useBAppDispatch } from '../helpers/hooks';
 import Layout from '../hoc/Layout/index';
 import { authCheckState } from '../store/slices/auth';
 import { RootState } from '../store/slices/types';
 import './App.scss';
+
+const Checkout = lazy(() => import('../containers/Checkout'));
+const Orders = lazy(() => import('../containers/Orders'));
+const Auth = lazy(() => import('../containers/Auth'));
+const Logout = lazy(() => import('../containers/Logout'));
+const BurgerBuilder = lazy(() => import('../containers/BurgerBuilder'));
 
 function App() {
   const dispatch = useBAppDispatch();
@@ -32,7 +33,7 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/checkout/" element={<Checkout />}>
-            <Route path={'contact-data'} element={<ContactData />} />
+            <Route path={'contact-data'} />
           </Route>
           <Route path="/orders" element={<Orders />} />
           <Route path="/" element={<BurgerBuilder />} />
@@ -48,7 +49,9 @@ function App() {
 
   return (
     <div className="App">
-      <Layout>{routes()}</Layout>
+      <Layout>
+        <Suspense fallback={<Spinner />}>{routes()}</Suspense>
+      </Layout>
     </div>
   );
 }
