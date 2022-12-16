@@ -1,6 +1,6 @@
 # About
 
-Small application to order burgers. Infrastructure: React, Redux, Axios, Firebase, Sass
+Small application to order burgers. Infrastructure: React, Redux, Axios, Firebase, Sass, Webpack
 
 # TODO:
 
