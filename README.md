@@ -6,4 +6,3 @@ Small application to order burgers. Infrastructure: React, Redux, Axios, Firebas
 
 - Implement tokens refresh
 - Use React Query together with thunk
-- Add clsx
