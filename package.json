@@ -15,7 +15,7 @@
     "react-router-dom": "6.4.5"
   },
   "scripts": {
-    "start": "cross-env SERVE=true webpack serve",
+    "start": "cross-env NODE_ENV=development SERVE=true webpack serve",
     "build": "cross-env NODE_ENV=production webpack build",
     "typecheck": "tsc --skipLibCheck",
     "lint": "./node_modules/eslint/bin/eslint.js --fix ."

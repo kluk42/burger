@@ -45,19 +45,9 @@ module.exports = {
         type: 'asset',
       },
       {
-        test: /\.(jsx?)$/,
-        exclude: /node_modules/,
-        use: {
-          // without additional settings, this will reference .babelrc
-          loader: 'babel-loader',
-        },
-      },
-      {
         test: /\.(tsx?)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'ts-loader',
-        },
+        use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }],
       },
       {
         test: /\.(sc|c)ss$/i,
