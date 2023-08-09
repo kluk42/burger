@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
-export interface OwnProps {}
+export interface OwnProps {
+  children?: React.ReactNode;
+}
 
 export type Props = FC<OwnProps>;

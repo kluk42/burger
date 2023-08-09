@@ -13,7 +13,7 @@ const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development
 const plugins = [
   new MiniCssExtractPlugin(),
   new HtmlWebpackPlugin({
-    template: './src/index.html',
+    template: path.join(__dirname, './src/index.html'),
   }),
 ];
 
@@ -29,7 +29,7 @@ module.exports = {
   mode: mode,
   plugins: [new MiniCssExtractPlugin()],
 
-  entry: './src/index.tsx',
+  entry: path.join(__dirname, './src/index.tsx'),
 
   output: {
     path: path.resolve(__dirname, 'build'),
@@ -77,8 +77,9 @@ module.exports = {
   devtool: 'source-map',
 
   devServer: {
-    static: './dist',
+    static: path.join(__dirname, './dist'),
     hot: true,
     historyApiFallback: true,
+    port: 3000,
   },
 };

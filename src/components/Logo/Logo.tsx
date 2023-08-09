@@ -1,6 +1,6 @@
-import { Props } from './types';
-import './Logo.scss';
 import logoPAth from '../../assets/images/logo.png';
+import './Logo.scss';
+import { Props } from './types';
 
 const Logo: Props = ({ children }) => {
   return (
