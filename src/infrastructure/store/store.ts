@@ -2,12 +2,10 @@ import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { AnyAction } from 'redux';
 import authReducer from './slices/auth';
 import burgerBuilderReducer from './slices/burgerBuilder';
-import ordersReducer from './slices/order';
 
 const rootReducer = {
   burgerBuilder: burgerBuilderReducer,
   auth: authReducer,
-  orders: ordersReducer,
 };
 
 export const store = configureStore({

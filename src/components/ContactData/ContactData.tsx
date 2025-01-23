@@ -1,10 +1,13 @@
 import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { calculateTotalPrice } from '../../helpers/calculateTotalPrice';
 import { useBAppDispatch } from '../../helpers/hooks';
 import WithErrorHandler from '../../hoc/withErrorHandler';
+import { usePurchaseBurger } from '../../hooks/usePurchaseBurger';
+import { DeliveryMethods, Order } from '../../hooks/usePurchaseBurger/types';
 import axios from '../../infrastructure/network/axios-orders';
-import { purchaseBurger } from '../../infrastructure/store/slices/order';
+import { resetIngredients } from '../../infrastructure/store/slices/burgerBuilder';
 import { RootState } from '../../infrastructure/store/slices/types';
 import Button from '../Button';
 import { Theme } from '../Button/types';
@@ -12,15 +15,7 @@ import Dropdown from '../Dropdown';
 import Input from '../Input';
 import Spinner from '../Spinner';
 import './ContactData.scss';
-import {
-  DropDownItems,
-  InputData,
-  InputNames,
-  Order,
-  OwnProps,
-  Props,
-  ValidationRules,
-} from './types';
+import { InputData, InputNames, OwnProps, Props, ValidationRules } from './types';
 
 const validationRules: ValidationRules = {
   [InputNames.Name]: {
@@ -49,21 +44,31 @@ const validationRules: ValidationRules = {
 };
 
 const ContactData: Props = () => {
+  const dispatch = useBAppDispatch();
   const ingredients = useSelector((state: RootState) => state.burgerBuilder.ingredients);
   const totalPrice = useSelector((state: RootState) =>
     calculateTotalPrice(state.burgerBuilder.ingredients)
   );
-  const isPurchasing = useSelector((state: RootState) => state.orders.purchasing);
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);
-  const dispatch = useBAppDispatch();
+
   const {
     register,
     formState: { errors, isValid: isFormValid },
     handleSubmit,
     control,
   } = useForm<InputData>({ mode: 'onChange' });
+
+  const navigate = useNavigate();
+
   const { touchedFields } = useFormState<InputData>({ control });
+
+  const { mutate: purchaseBurger, isPending: isPurchasing } = usePurchaseBurger({
+    onSuccess: () => {
+      dispatch(resetIngredients());
+      navigate('/', { replace: true });
+    },
+  });
 
   const orderHandler = (data: InputData) => {
     const order: Order = {
@@ -81,7 +86,7 @@ const ContactData: Props = () => {
       },
       deliveryMethod: data[InputNames.DeliveryMethod],
     };
-    dispatch(purchaseBurger(order, token));
+    purchaseBurger({ order, token });
   };
 
   return (
@@ -125,12 +130,16 @@ const ContactData: Props = () => {
             control={control}
             name={InputNames.DeliveryMethod}
             rules={validationRules['delivery-method']}
-            defaultValue={DropDownItems.Cheapest}
+            defaultValue={DeliveryMethods.Cheapest}
             render={({ field: { onChange, value, name } }) => (
               <Dropdown
                 label={name}
                 name={name}
-                options={[DropDownItems.Cheapest, DropDownItems.Fastest, DropDownItems.OnMyOwn]}
+                options={[
+                  DeliveryMethods.Cheapest,
+                  DeliveryMethods.Fastest,
+                  DeliveryMethods.OnMyOwn,
+                ]}
                 value={value}
                 onChange={onChange}
               />

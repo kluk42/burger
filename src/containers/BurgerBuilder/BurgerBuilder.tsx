@@ -14,7 +14,6 @@ import { Ingredients, IngredientsToBuildOf } from '../../hooks/useIngredients/ty
 import axios from '../../infrastructure/network/axios-orders';
 import { setAuthRedirectPath } from '../../infrastructure/store/slices/auth';
 import { setIngredients } from '../../infrastructure/store/slices/burgerBuilder';
-import { startOrder } from '../../infrastructure/store/slices/order';
 import { RootState } from '../../infrastructure/store/slices/types';
 import { OwnProps, Props } from './types';
 
@@ -66,7 +65,6 @@ const BurgerBuilder: Props = () => {
     dispatch(setIngredients({ ingredients: orderIngredients }));
     if (isAuthenticated) {
       setIsModalOpen(true);
-      dispatch(startOrder());
     } else {
       dispatch(setAuthRedirectPath({ path: '/checkout' }));
       navigate('/auth');

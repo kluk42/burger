@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { RegisterOptions } from 'react-hook-form';
+import { DeliveryMethods } from '../../hooks/usePurchaseBurger/types';
 
 export interface OwnProps {}
 
@@ -16,13 +17,7 @@ export interface InputData {
   [InputNames.Email]: string;
   [InputNames.Street]: string;
   [InputNames.PostalCode]: string;
-  [InputNames.DeliveryMethod]: DropDownItems;
-}
-
-export enum DropDownItems {
-  Fastest = 'fastest',
-  Cheapest = 'cheapest',
-  OnMyOwn = 'on my own',
+  [InputNames.DeliveryMethod]: DeliveryMethods;
 }
 
 export interface ValidationRuleSet {
@@ -31,29 +26,6 @@ export interface ValidationRuleSet {
   maxLength?: number;
   isEmail?: boolean;
 }
-
-export type Order = {
-  ingredients: {
-    Bacon: number;
-    Cheese: number;
-    Meat: number;
-    Salad: number;
-    Seeds1: number;
-    Seeds2: number;
-  };
-  price: number;
-  customer: {
-    name: string;
-    address: {
-      street: string;
-      zipCode: number;
-      country: string;
-    };
-    email: string;
-    id: string;
-  };
-  deliveryMethod: DropDownItems;
-};
 
 export type Validity = Record<InputNames, boolean>;
 

@@ -1,5 +1,3 @@
-import { Order } from '../../../components/ContactData/types';
-import { OrderFromServer } from '../../../components/Order/types';
 import { IngredientsToBuildOf } from '../../../hooks/useIngredients/types';
 
 export type BurgerBuilderInitialState = {
@@ -11,14 +9,6 @@ export type SetIngredients = {
   ingredients: IngredientsToBuildOf;
 };
 
-export type OrdersInitialState = {
-  orders: OrderFromServer[];
-  purchasing: boolean;
-  purchased: boolean;
-  error: boolean;
-  ordersFetching: boolean;
-};
-
 export type AuthRootState = {
   userId: string;
   token: string;
@@ -26,23 +16,6 @@ export type AuthRootState = {
   loading: boolean;
   authRedirectPath: string;
   refreshToken: string;
-};
-
-export type PurchaseBurgerSuccessPayload = {
-  id: string;
-  order: Order;
-};
-
-export type PurchaseBurgerFailPayload = {
-  error: true;
-};
-
-export type FetchOrdersPayload = {
-  orders: OrderFromServer[];
-};
-
-export type FetchOrdersFailPayload = {
-  error: boolean;
 };
 
 export type AuthSuccessPayload = {
@@ -66,6 +39,5 @@ export type RefreshTokenPayload = {
 
 export type RootState = {
   burgerBuilder: BurgerBuilderInitialState;
-  orders: OrdersInitialState;
   auth: AuthRootState;
 };
