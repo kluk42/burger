@@ -1,18 +1,8 @@
 import { FC } from 'react';
-
-export enum Ingredients {
-  BreadBottom = 'BreadBottom',
-  BreadTop = 'BreadTop',
-  SeedsOne = 'Seeds1',
-  SeedsTwo = 'Seeds2',
-  Meat = 'Meat',
-  Cheese = 'Cheese',
-  Salad = 'Salad',
-  Bacon = 'Bacon',
-}
+import { Ingredients } from '../../../hooks/useIngredients/types';
 
 export interface OwnProps {
-  type: Ingredients;
+  type: `${Ingredients}` | 'BreadBottom' | 'BreadTop';
 }
 
 export type Props = FC<OwnProps>;

@@ -1,7 +1,8 @@
 import { FC } from 'react';
+import { IngredientsToBuildOf } from '../../hooks/useIngredients/types';
 
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-
-export interface OwnProps {}
+export interface OwnProps {
+  ingredients: IngredientsToBuildOf;
+}
 
 export type Props = FC<OwnProps>;

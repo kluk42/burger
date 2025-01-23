@@ -1,39 +1,14 @@
-import { Ingredients } from '../../../components/Burger/BurgerIngredient/types';
 import { Order } from '../../../components/ContactData/types';
 import { OrderFromServer } from '../../../components/Order/types';
-import { IngredientsToBuildOf } from '../../../containers/BurgerBuilder/types';
-import { PurchasableIngredients } from './burgerBuilder';
+import { IngredientsToBuildOf } from '../../../hooks/useIngredients/types';
 
 export type BurgerBuilderInitialState = {
   ingredients: IngredientsToBuildOf;
-  totalPrice: number;
-  isFetching: boolean;
-  error: boolean;
   building: boolean;
 };
 
-export type PayloadToHandleIngredients = {
-  ingredientName: PurchasableIngredients;
-};
-
-export type PayloadFetchIngredients = {
+export type SetIngredients = {
   ingredients: IngredientsToBuildOf;
-  fetching: boolean;
-};
-
-export type PayloadFetchingFailed = {
-  error: true;
-};
-
-export type ResetIngredientsPayload = {
-  ingredients: {
-    [Ingredients.Bacon]: 0;
-    [Ingredients.Cheese]: 0;
-    [Ingredients.Meat]: 0;
-    [Ingredients.Salad]: 0;
-    [Ingredients.SeedsOne]: 1;
-    [Ingredients.SeedsTwo]: 1;
-  };
 };
 
 export type OrdersInitialState = {

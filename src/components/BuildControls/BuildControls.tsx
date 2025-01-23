@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { calculateTotalPrice } from '../../helpers/calculateTotalPrice';
+import { Ingredients } from '../../hooks/useIngredients/types';
 import { RootState } from '../../infrastructure/store/slices/types';
 import BuildControl from '../BuildControl/index';
-import { Ingredients } from '../Burger/BurgerIngredient/types';
 import './BuildControls.scss';
 import { Controls, Props } from './types';
 
@@ -14,30 +14,36 @@ const controls: Controls = [
   Ingredients.Meat,
 ];
 
-const BuildControls: Props = ({ handleOrderBtnClick }) => {
-  const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  const price = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
+const BuildControls: Props = ({
+  handleOrderBtnClick,
+  ingredients,
+  addIngredient,
+  subtractIngredient,
+}) => {
   const isAuthenticated = !!useSelector((state: RootState) => state.auth.token);
   const [purchasable, setPurchasable] = useState(false);
 
   useEffect(() => {
     setPurchasable(
-      Object.keys(ingredientsFromStore).some(
-        ing =>
-          ingredientsFromStore[ing as keyof IngredientsToBuildOf] > 0 &&
-          ing !== Ingredients.SeedsOne &&
-          ing !== Ingredients.SeedsTwo
+      Object.values(Ingredients).some(
+        ing => ingredients[ing] > 0 && ing !== Ingredients.SeedsOne && ing !== Ingredients.SeedsTwo
       )
     );
-  }, [ingredientsFromStore]);
+  }, [ingredients]);
 
   return (
     <div className="BuildControls">
       <p>
-        Current price: <strong>{price.toFixed(2)}</strong>
+        Current price: <strong>{calculateTotalPrice(ingredients)}</strong>
       </p>
       {controls.map(label => (
-        <BuildControl key={label} label={label} />
+        <BuildControl
+          add={() => addIngredient(label)}
+          subtract={() => subtractIngredient(label)}
+          amount={ingredients[label]}
+          key={label}
+          label={label}
+        />
       ))}
       <button
         className="BuildControls__orderBtn"

@@ -1,5 +1,6 @@
 import { Controller, useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { calculateTotalPrice } from '../../helpers/calculateTotalPrice';
 import { useBAppDispatch } from '../../helpers/hooks';
 import WithErrorHandler from '../../hoc/withErrorHandler';
 import axios from '../../infrastructure/network/axios-orders';
@@ -49,7 +50,9 @@ const validationRules: ValidationRules = {
 
 const ContactData: Props = () => {
   const ingredients = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  const totalPrice = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
+  const totalPrice = useSelector((state: RootState) =>
+    calculateTotalPrice(state.burgerBuilder.ingredients)
+  );
   const isPurchasing = useSelector((state: RootState) => state.orders.purchasing);
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);

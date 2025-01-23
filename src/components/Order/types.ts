@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { IngredientsToBuildOf } from '../../hooks/useIngredients/types';
 import { Order } from '../ContactData/types';
 
 export type OrderFromServer = Order & { id: string };

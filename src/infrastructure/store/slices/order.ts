@@ -23,6 +23,7 @@ export const slice = createSlice({
       state.orders = [...state.orders, { ...action.payload.order, id: action.payload.id }];
       state.purchasing = false;
       state.purchased = true;
+      debugger;
     },
     purchaseFail: state => {
       state.purchasing = false;
@@ -66,6 +67,7 @@ export const purchaseBurger = (order: Order, token: string): BAppThunk => {
         '/orders.json?auth=' + token,
         order
       );
+      debugger;
       dispatch(purchaseSuccess({ id: response.data.name, order }));
       dispatch(resetIngredients());
     } catch (err) {
