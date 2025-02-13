@@ -14,5 +14,6 @@ Small application to order burgers. Infrastructure: React, Redux, Axios, Firebas
 
 ## TODO:
 
-- Use React Query together with thunk
+~~- Use React Query together with thunk~~
+
 - Unit tests
