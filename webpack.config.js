@@ -46,7 +46,16 @@ module.exports = {
       {
         test: /\.(tsx?)$/,
         exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }],
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              plugins: [require.resolve('react-refresh/babel')],
+            },
+          },
+          { loader: 'ts-loader' },
+        ],
       },
       {
         test: /\.(sc|c)ss$/i,
