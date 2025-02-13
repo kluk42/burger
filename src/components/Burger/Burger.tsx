@@ -1,40 +1,31 @@
-import { useSelector } from 'react-redux';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
-import { RootState } from '../../infrastructure/store/slices/types';
+import { IngredientsToBuildOf } from '../../hooks/useIngredients/types';
 import './Burger.scss';
 import BurgerIngredient from './BurgerIngredient/index';
-import { Ingredients } from './BurgerIngredient/types';
 import { Props } from './types';
 
-const Burger: Props = () => {
-  const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  const transFormedIngredients = Object.keys(ingredientsFromStore)
+const Burger: Props = ({ ingredients }) => {
+  const transFormedIngredients = Object.keys(ingredients)
     .map(ingKey => {
-      return [...Array(ingredientsFromStore[ingKey as keyof IngredientsToBuildOf])].map(
-        (_, index) => {
-          return (
-            <BurgerIngredient key={ingKey + index} type={ingKey as keyof IngredientsToBuildOf} />
-          );
-        }
-      );
+      return [...Array(ingredients[ingKey as keyof IngredientsToBuildOf])].map((_, index) => {
+        return (
+          <BurgerIngredient key={ingKey + index} type={ingKey as keyof IngredientsToBuildOf} />
+        );
+      });
     })
     .reduce((acc, current) => {
       return [...acc, ...current];
     }, []);
 
-  const isBurgerEmpty = !Object.keys(ingredientsFromStore).some(
-    i =>
-      ingredientsFromStore[i as keyof IngredientsToBuildOf] > 0 &&
-      i !== Ingredients.SeedsOne &&
-      i !== Ingredients.SeedsTwo
+  const isBurgerEmpty = !Object.keys(ingredients).some(
+    i => ingredients[i as keyof IngredientsToBuildOf] > 0
   );
 
   const emptyIngsSign = <p>Please start adding ingredients</p>;
   return (
     <div className="Burger">
-      <BurgerIngredient type={Ingredients.BreadTop} />
+      <BurgerIngredient type={'BreadTop'} />
       {isBurgerEmpty ? emptyIngsSign : transFormedIngredients}
-      <BurgerIngredient type={Ingredients.BreadBottom} />
+      <BurgerIngredient type={'BreadBottom'} />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
-import { IngredientsToBuildOf } from '../../containers/BurgerBuilder/types';
+import { calculateTotalPrice } from '../../helpers/calculateTotalPrice';
+import { IngredientsToBuildOf } from '../../hooks/useIngredients/types';
 import { RootState } from '../../infrastructure/store/slices/types';
 import Button from '../Button/index';
 import { Theme } from '../Button/types';
@@ -8,7 +9,6 @@ import { Props } from './types';
 
 const OrderSummary: Props = ({ handleCnclClick, handleCntnClick }) => {
   const ingredientsFromStore = useSelector((state: RootState) => state.burgerBuilder.ingredients);
-  const total = useSelector((state: RootState) => state.burgerBuilder.totalPrice);
 
   const ingredientSummary = Object.keys(ingredientsFromStore).map((igKey, ind) => (
     <li key={igKey}>
@@ -23,7 +23,7 @@ const OrderSummary: Props = ({ handleCnclClick, handleCntnClick }) => {
       <ul>{ingredientSummary}</ul>
       <p>Continue to checkout?</p>
       <p>
-        <strong>Total Price: {total.toFixed(2)}</strong>
+        <strong>Total Price: {calculateTotalPrice(ingredientsFromStore)}</strong>
       </p>
       <Button onClick={handleCnclClick} theme={Theme.Danger}>
         Cancel

@@ -4,7 +4,7 @@ import { BAppDispatch, BAppStore } from '../store/store';
 import ordersService from './axios-orders';
 import refreshTokenService, { RefreshTokenResponse } from './refreshToken-axios';
 
-export const refreshTokenFunc = async (refreshToken: string, dispatch: BAppDispatch) => {
+const refreshTokenFunc = async (refreshToken: string, dispatch: BAppDispatch) => {
   try {
     const refreshResponse = await refreshTokenService.post<
       any,
@@ -13,7 +13,7 @@ export const refreshTokenFunc = async (refreshToken: string, dispatch: BAppDispa
       grant_type: 'refresh_token',
       refresh_token: refreshToken,
     });
-    const { id_token, refresh_token, user_id } = refreshResponse.data;
+    const { id_token, refresh_token } = refreshResponse.data;
 
     dispatch(refreshTokens({ refreshToken: refresh_token, accessToken: id_token }));
   } catch (error) {

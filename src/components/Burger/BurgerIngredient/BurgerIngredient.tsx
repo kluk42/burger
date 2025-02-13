@@ -1,15 +1,16 @@
+import { Ingredients } from '../../../hooks/useIngredients/types';
 import './BurgerIngredient.scss';
-import { Ingredients, Props } from './types';
+import { Props } from './types';
 
 const BurgerIngredient: Props = ({ type }) => {
   let ingredient: JSX.Element | null;
   switch (type) {
-    case Ingredients.BreadBottom:
+    case 'BreadBottom':
       ingredient = <div className={type}></div>;
       break;
-    case Ingredients.BreadTop:
+    case 'BreadTop':
       ingredient = (
-        <div className={Ingredients.BreadTop}>
+        <div className={'BreadTop'}>
           <div className={Ingredients.SeedsOne}></div>
           <div className={Ingredients.SeedsTwo}></div>
         </div>

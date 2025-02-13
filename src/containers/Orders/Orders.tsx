@@ -1,32 +1,22 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Order from '../../components/Order';
 import Spinner from '../../components/Spinner';
-import { useBAppDispatch } from '../../helpers/hooks';
 import withErrorHandler from '../../hoc/withErrorHandler';
+import { useOrders } from '../../hooks/useOrders';
 import axios from '../../infrastructure/network/axios-orders';
-import { fetchOrders } from '../../infrastructure/store/slices/order';
 import { RootState } from '../../infrastructure/store/slices/types';
 import './Orders.scss';
 import { Props } from './types';
 
 const Orders: Props = () => {
-  const orders = useSelector((state: RootState) => state.orders.orders);
-  const isLoading = useSelector((state: RootState) => state.orders.ordersFetching);
   const token = useSelector((state: RootState) => state.auth.token);
   const userId = useSelector((state: RootState) => state.auth.userId);
 
-  const dispatch = useBAppDispatch();
-
-  useEffect(() => {
-    if (token) {
-      dispatch(fetchOrders(token, userId));
-    }
-  }, [dispatch, token, userId]);
+  const { data: orders, isFetching } = useOrders({ token, userId });
 
   return (
     <div>
-      {isLoading ? (
+      {isFetching ? (
         <Spinner />
       ) : (
         orders?.map(order => (
