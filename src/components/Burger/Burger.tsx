@@ -1,7 +1,9 @@
-import { IngredientsToBuildOf } from '../../hooks/useIngredients/types';
+import { Ingredients, IngredientsToBuildOf } from '../../hooks/useIngredients/types';
 import './Burger.scss';
 import BurgerIngredient from './BurgerIngredient/index';
 import { Props } from './types';
+
+const NOT_COUNTED_INGREDIENTS = [Ingredients.SeedsOne, Ingredients.SeedsTwo];
 
 const Burger: Props = ({ ingredients }) => {
   const transFormedIngredients = Object.keys(ingredients)
@@ -16,9 +18,9 @@ const Burger: Props = ({ ingredients }) => {
       return [...acc, ...current];
     }, []);
 
-  const isBurgerEmpty = !Object.keys(ingredients).some(
-    i => ingredients[i as keyof IngredientsToBuildOf] > 0
-  );
+  const isBurgerEmpty = !Object.keys(ingredients)
+    .filter(i => !NOT_COUNTED_INGREDIENTS.includes(i as Ingredients))
+    .some(i => ingredients[i as keyof IngredientsToBuildOf] > 0);
 
   const emptyIngsSign = <p>Please start adding ingredients</p>;
   return (
