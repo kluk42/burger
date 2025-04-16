@@ -12,7 +12,7 @@ import {
   saveUserId,
 } from '../../localStorage';
 import authService from '../../network/axios-auth';
-import { BAppDispatch, BAppThunk } from '../store';
+import { BAppDispatch, BAppThunk, createBAppAsyncThunk } from '../store';
 import {
   AuthFailPayload,
   AuthRootState,
@@ -84,6 +84,9 @@ export const slice = createSlice({
       state.token = action.payload.accessToken;
     },
   },
+  extraReducers: builder => {
+    builder.addCase(bla.pending, state => {});
+  },
 });
 
 export default slice.reducer;
@@ -125,6 +128,42 @@ export const auth = (email: string, password: string, isSignUp: boolean): BAppTh
     }
   };
 };
+
+export const bla = createBAppAsyncThunk(
+  `${slice.name}/fetchAuthData`,
+  async ({ email, isSignUp, password }: { email: string; password: string; isSignUp: boolean }) => {
+    try {
+      const authData = {
+        email,
+        password,
+        returnSecureToken: true,
+      };
+      let url = 'accounts:signUp?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+      if (!isSignUp) {
+        url = 'accounts:signInWithPassword?key=AIzaSyDBasCUXhdhZTn4zf9rVSs0bHbmiCeskHw';
+      }
+      const response = await authService.post<any, AxiosResponse<AuthResponseData>>(url, authData);
+
+      saveAccessToken(response.data.idToken);
+      saveUserId(response.data.localId);
+      saveRefreshToken(response.data.refreshToken);
+
+      dispatch(
+        success({
+          token: response.data.idToken,
+          userId: response.data.localId,
+          refreshToken: response.data.refreshToken,
+        })
+      );
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response && isFirebaseErrorData(err.response.data)) {
+        dispatch(fail({ errMessage: firebaseErrMessageHandler(err.response.data.error.message) }));
+      } else {
+        dispatch(fail({ errMessage: 'Smth went wrong...' }));
+      }
+    }
+  }
+);
 
 export const authCheckState = (dispatch: BAppDispatch) => {
   const token = getAccessToken();
